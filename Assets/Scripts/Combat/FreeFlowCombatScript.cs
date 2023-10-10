@@ -12,6 +12,13 @@ public class FreeFlowCombatScript : MonoBehaviour
     private float lastAttackTime;
     private int comboCount = 0;
 
+    private Animator anim;
+
+    void Start()
+    {
+        anim = GetComponent<Animator>();
+    }
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.F))
@@ -20,6 +27,7 @@ public class FreeFlowCombatScript : MonoBehaviour
             {
                 comboCount++;
                 Debug.Log("Combo: " + comboCount);
+
             }
 
             else
@@ -45,6 +53,7 @@ public class FreeFlowCombatScript : MonoBehaviour
         {
             case 1:
                 Debug.Log("Attack 1");
+                anim.SetBool("isAttacking", true);
                 break;
 
             case 2:
@@ -63,6 +72,11 @@ public class FreeFlowCombatScript : MonoBehaviour
                 Debug.Log("Max combo reached!");
                 break;
         }
+    }
+
+    public void endAttack()
+    {
+        anim.SetBool("isAttacking", false);
     }
     // private EnemyManager enemyManager;
     //     private EnemyDetection2D enemyDetection;
