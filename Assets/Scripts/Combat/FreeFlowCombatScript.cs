@@ -5,14 +5,29 @@ using DG.Tweening;
 
 public class FreeFlowCombatScript : MonoBehaviour
 {
-    public float comboResetTime = 1f;
-    public KeyCode attackButton = KeyCode.F;
-    public KeyCode resetButton = KeyCode.E;
+    public float comboResetTime = 0.1f;
+    // public KeyCode attackButton = KeyCode.F;
+    // public KeyCode resetButton = KeyCode.E;
 
     private float lastAttackTime;
     private int comboCount = 0;
 
     private Animator anim;
+
+    public GameObject attackPoint;
+
+    public float radius;
+
+    public LayerMask enemies;
+
+    public float dmg = 20;
+
+    SoundScript soundManager;
+
+    void Awake()
+    {
+        soundManager = GameObject.FindGameObjectWithTag("Sound").GetComponent<SoundScript>();
+    }
 
     void Start()
     {
@@ -21,7 +36,7 @@ public class FreeFlowCombatScript : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetMouseButtonDown(0))
         {
             if (Time.time - lastAttackTime <= comboResetTime)
             {
@@ -36,7 +51,7 @@ public class FreeFlowCombatScript : MonoBehaviour
                 Debug.Log("Combo 1");
             }
 
-            Attack();
+            attack();
             lastAttackTime = Time.time;
         }
 
@@ -47,7 +62,7 @@ public class FreeFlowCombatScript : MonoBehaviour
         }
     }
 
-    void Attack()
+    public void attack()
     {
         switch (comboCount)
         {
@@ -58,6 +73,7 @@ public class FreeFlowCombatScript : MonoBehaviour
 
             case 2:
                 Debug.Log("Attack 2");
+                anim.SetTrigger("Combo1");
                 break;
 
             case 3:
@@ -74,9 +90,34 @@ public class FreeFlowCombatScript : MonoBehaviour
         }
     }
 
+    public void attackCollide()
+    {
+        //Debug.Log("Collide detection activated..");
+
+        Collider2D[] enemy = Physics2D.OverlapCircleAll(attackPoint.transform.position, radius, enemies);
+
+        foreach (Collider2D enemyGameobject in enemy)
+        {
+            soundManager.playSfx(soundManager.lightPunch);
+            Debug.Log("ENEMY HIT!");
+            enemyGameobject.GetComponent<EnemyScript>().health -= dmg;
+        }
+    }
+
+
     public void endAttack()
     {
         anim.SetBool("isAttacking", false);
+    }
+
+    public void endCombo()
+    {
+        anim.ResetTrigger("Combo1");
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(attackPoint.transform.position, radius);
     }
     // private EnemyManager enemyManager;
     //     private EnemyDetection2D enemyDetection;
