@@ -156,7 +156,7 @@ Transform:
   m_GameObject: {fileID: 74745469}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.1255, y: 0.09, z: 0}
+  m_LocalPosition: {x: -0.17902315, y: 0.09, z: -0.063245915}
   m_LocalScale: {x: 0.52449787, y: 0.49042508, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -299,7 +299,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2484f84a494434849836070403500d03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  comboResetTime: 0.5
+  comboResetTime: 2
   attackPoint: {fileID: 858696320}
   radius: 0.7
   enemies:
@@ -386,7 +386,7 @@ Transform:
   m_GameObject: {fileID: 193761421}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 14.68, y: 0.09, z: -0.044651147}
+  m_LocalPosition: {x: 6.96, y: 0.09, z: -0.044651147}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -937,7 +937,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 10.218872
+  orthographic size: 6.8033876
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -962,7 +962,7 @@ Transform:
   m_GameObject: {fileID: 934304541}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.78, y: 7.42, z: -10}
+  m_LocalPosition: {x: -2.38, y: 4.66, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1024,6 +1024,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c3cb7ebe1bb046db8336be414650ba9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  FollowSpeed: 2
+  yOffset: 4.5
+  target: {fileID: 74745473}
 --- !u!1 &1542585589
 GameObject:
   m_ObjectHideFlags: 0
@@ -1198,7 +1201,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.695
+  m_Volume: 1
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -1310,7 +1313,7 @@ Transform:
   m_GameObject: {fileID: 1771259289}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -18.31, y: 0.05, z: -0.044651147}
+  m_LocalPosition: {x: -12.63, y: 0.05, z: -0.044651147}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

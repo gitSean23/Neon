@@ -5,12 +5,13 @@ using DG.Tweening;
 
 public class FreeFlowCombatScript : MonoBehaviour
 {
-    public float comboResetTime = 0.1f;
+    public float comboResetTime = 2f;
     // public KeyCode attackButton = KeyCode.F;
     // public KeyCode resetButton = KeyCode.E;
 
     private float lastAttackTime;
     private int comboCount = 0;
+    private int realComboCount = 0;
 
     private Animator anim;
 
@@ -36,56 +37,91 @@ public class FreeFlowCombatScript : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButton(0))
         {
-            if (Time.time - lastAttackTime <= comboResetTime)
-            {
-                comboCount++;
-                Debug.Log("Combo: " + comboCount);
-
-            }
-
-            else
-            {
-                comboCount = 1;
-                Debug.Log("Combo 1");
-            }
-
             attack();
-            lastAttackTime = Time.time;
+
+        }
+
+        if (Time.time - lastAttackTime <= comboResetTime)
+        {
+            realComboCount = 0;
+            Debug.Log("COMBO RESET!");
+        }
+
+        else
+        {
+            comboCount = 0;
+            realComboCount = 0;
+            //endAttack();
+            Debug.Log("Combo 1");
         }
 
         if (Input.GetKeyDown(KeyCode.E))
         {
             comboCount = 0;
+            realComboCount = 0;
+            endAttack();
             Debug.Log("Combo Reset");
         }
+
     }
+
+    // IEnumerator something()
+    // {
+    //     if (Time.time - lastAttackTime <= comboResetTime)
+    //     {
+    //         comboCount++;
+    //         realComboCount++;
+    //         //Debug.Log("Combo: " + comboCount);
+    //     }
+
+    //     attack();
+    //     lastAttackTime = Time.time;
+    //     yield return new WaitForSeconds(.5f);
+    // }
 
     public void attack()
     {
-        switch (comboCount)
+        lastAttackTime = Time.time;
+
+        realComboCount++;
+
+        switch (realComboCount)
         {
+
+            case 0:
+                Debug.Log("Attack ZERO");
+                break;
+
             case 1:
                 Debug.Log("Attack 1");
                 anim.SetBool("isAttacking", true);
                 break;
 
             case 2:
+                anim.SetBool("isAttacking", true);
                 Debug.Log("Attack 2");
                 anim.SetTrigger("Combo1");
                 break;
 
             case 3:
+                anim.SetBool("isAttacking", true);
                 Debug.Log("Attack 3");
+                anim.SetTrigger("Combo2");
                 break;
 
-            case 4:
-                Debug.Log("Attack 4");
-                break;
+            // case 4:
+            //     realComboCount = 0;
+            //     Debug.Log("Attack 4");
+            //     // anim.SetTrigger("Combo3");
+            //     break;
 
             default:
-                Debug.Log("Max combo reached!");
+                realComboCount = 1;
+                Debug.Log("Cycling back to Attack 1");
+                anim.SetBool("isAttacking", true);
+                //Debug.Log("Max combo reached!");
                 break;
         }
     }
@@ -96,11 +132,23 @@ public class FreeFlowCombatScript : MonoBehaviour
 
         Collider2D[] enemy = Physics2D.OverlapCircleAll(attackPoint.transform.position, radius, enemies);
 
-        foreach (Collider2D enemyGameobject in enemy)
+        if (enemy.Length < 1)
         {
-            soundManager.playSfx(soundManager.lightPunch);
-            Debug.Log("ENEMY HIT!");
-            enemyGameobject.GetComponent<EnemyScript>().health -= dmg;
+            soundManager.playSfx(soundManager.lightWhoosh);
+            Debug.Log("No enemies to hit in range..");
+        }
+
+        else
+        {
+            foreach (Collider2D enemyGameobject in enemy)
+            {
+                if (enemyGameobject != null)
+                {
+                    soundManager.playSfx(soundManager.lightPunch);
+                    Debug.Log("ENEMY HIT!");
+                    enemyGameobject.GetComponent<EnemyScript>().health -= dmg;
+                }
+            }
         }
     }
 
@@ -110,117 +158,21 @@ public class FreeFlowCombatScript : MonoBehaviour
         anim.SetBool("isAttacking", false);
     }
 
+    // For future use, make one endCombo method 
+    // and just put in an arguement for which combo to end
     public void endCombo()
     {
         anim.ResetTrigger("Combo1");
+    }
+
+    public void endCombo2()
+    {
+        anim.ResetTrigger("Combo2");
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(attackPoint.transform.position, radius);
     }
-    // private EnemyManager enemyManager;
-    //     private EnemyDetection2D enemyDetection;
-    //     // private MovementInput2D movementInput;
-    //     // private Animator animator;
 
-    //     private int comboCount = 0;
-    //     private float lastAttackTime = 0f;
-    //     private float comboResetTime = 1.5f
-    //     // Start is called before the first frame update
-    //     void Start()
-    //     {
-    //         // enemyManager = FindObjectOfType<EnemyManager>();
-    //         // animator = GetComponent<Animator>();
-    //         enemyDetection = GetComponentInChildren<EnemyDetection2D>();
-    //         // movementInput = GetComponent<MovementInput2D>(); 
-    //         // impulseSource = GetComponentInChildren<CinemachineImpulseSource2D>(); 
-    //     }
-
-    //     // After locking onto an enemy..
-    //     // Reset the combo
-    //     // When the player attacks, start checking the player's attacks
-
-    //     // Update is called once per frame
-    //     void Update()
-    //     {
-    //         if (Time.time - lastAttackTime > comboResetTime)
-    //         {
-    //             comboCount = 0; // Reset the combo count if no attack within comboResetTime
-    //         }
-
-
-    //     }
-
-    //     void AttackCheck()
-    //     {
-    //         if (isAttackingEnemy)
-    //             return;
-
-    //         if (enemyDetection.currTarget() == null)
-    //         {
-    //             if (enemyManager.AliveEnemyCount() == 0)
-    //             {
-    //                 AttackC(null, 0);
-    //                 return;
-    //             }
-
-    //             else
-    //                 lockedTarget = enemyManager.RandomEnemy();
-    //         }
-    //     }
-
-    //     if (enemyDetection.InputMagnitude() > .2f)
-    //         lockedTarget = enemyDetection.currTarget();
-
-    //     if (lockedTarget == null)
-    //         lockedTarget = enemyManager.RandomEnemy();
-
-    //     if (lockedTarget != null && lockedTarget != lastComboTarget)
-    //         comboCount = 0;
-
-    //     Attack(lockedTarget, TargetDistance(lockedTarget));
-    // }
-
-    // public void Attack(EnemyScript target, float distance)
-    // {
-    //     string[] attacks = new string[] { "Kick", "Punch" };
-
-    //     if (target == null)
-    //     {
-    //         AttackType("Stand", .2f, null, 0);
-    //         return;
-    //     }
-
-    //     if (distance < 10)
-    //     {
-    //         if (Time.time - lastAttackTime > comboResetTime) ;
-    //         comboCount = 0;
-
-    //         animationCount = (int)Mathf.Repeat((float)animationCount + 1, (float)attacks.Length);
-    //         string attackString = isLastHit() ? attacks[Random.Range(0, attacks.Length)] : attacks[animationCount];
-
-    //         comboCount++;
-
-    //         if (target != lastComboTarget)
-    //             comboCount = 1;
-
-    //         if (comboCount > 1)
-    //             attackString = "ComboAttack" + comboCount;
-
-    //         AttackType(attackString, attackCooldown, target, .05f);
-
-    //         lastAttackTime = Time.time;
-
-    //         lastComboTarget = target;
-
-    //     }
-
-    //     else
-    //     {
-    //         lockedTarget = null;
-    //         AttackType("Stand", .2f, null, 0);
-    //     }
-
-    //     impulseSource.m_ImpulseDefinition.m_AmplitudeGain = Mathf.Max(3, 1 * distance);
 }
