@@ -5,7 +5,7 @@ using DG.Tweening;
 
 public class FreeFlowCombatScript : MonoBehaviour
 {
-    public float comboResetTime = 2f;
+    public float comboResetTime = 0.8f;
     // public KeyCode attackButton = KeyCode.F;
     // public KeyCode resetButton = KeyCode.E;
 
@@ -15,7 +15,7 @@ public class FreeFlowCombatScript : MonoBehaviour
 
     private float nextAttackTime = 0f;
 
-    float maxComboDelay = 1;
+    float maxComboDelay = 0.5f;
 
     private Animator anim;
 
@@ -25,7 +25,7 @@ public class FreeFlowCombatScript : MonoBehaviour
 
     public LayerMask enemies;
 
-    public float dmg = 20;
+    public float dmg = 15;
 
     SoundScript soundManager;
 
@@ -61,7 +61,7 @@ public class FreeFlowCombatScript : MonoBehaviour
             realComboCount = 0;
         }
 
-        if (Time.time - lastAttackTime > maxComboDelay)
+        if (Time.time - lastAttackTime > maxComboDelay || Input.GetKeyDown(KeyCode.E))
         {
             realComboCount = 0;
         }
@@ -73,8 +73,6 @@ public class FreeFlowCombatScript : MonoBehaviour
                 attack();
             }
         }
-
-
 
 
 
