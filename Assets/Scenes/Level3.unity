@@ -299,13 +299,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2484f84a494434849836070403500d03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  comboResetTime: 2
+  comboResetTime: 0.1
   attackPoint: {fileID: 858696320}
   radius: 0.7
   enemies:
     serializedVersion: 2
     m_Bits: 64
-  dmg: 20
+  dmg: 15
 --- !u!212 &74745483
 SpriteRenderer:
   m_ObjectHideFlags: 0

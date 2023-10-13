@@ -9,9 +9,13 @@ public class FreeFlowCombatScript : MonoBehaviour
     // public KeyCode attackButton = KeyCode.F;
     // public KeyCode resetButton = KeyCode.E;
 
-    private float lastAttackTime;
+    private float lastAttackTime = 0;
     private int comboCount = 0;
-    private int realComboCount = 0;
+    public static int realComboCount = 0;
+
+    private float nextAttackTime = 0f;
+
+    float maxComboDelay = 1;
 
     private Animator anim;
 
@@ -37,94 +41,78 @@ public class FreeFlowCombatScript : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButton(0))
-        {
-            attack();
 
+        if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && anim.GetCurrentAnimatorStateInfo(0).IsName("PlayerPunch")) //anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && 
+        {
+            Debug.Log("Ending attack1");
+            anim.SetBool("attack1", false);
         }
 
-        if (Time.time - lastAttackTime <= comboResetTime)
+        if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && anim.GetCurrentAnimatorStateInfo(0).IsName("PlayerPunch2")) // anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f &&
+        {
+            Debug.Log("Ending attack2");
+            anim.SetBool("attack2", false);
+        }
+
+        if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && anim.GetCurrentAnimatorStateInfo(0).IsName("Player_Light_Kick")) // anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && 
+        {
+            Debug.Log("Ending attack3");
+            anim.SetBool("attack3", false);
+            realComboCount = 0;
+        }
+
+        if (Time.time - lastAttackTime > maxComboDelay)
         {
             realComboCount = 0;
-            Debug.Log("COMBO RESET!");
         }
 
-        else
+        if (Time.time > nextAttackTime)
         {
-            comboCount = 0;
-            realComboCount = 0;
-            //endAttack();
-            Debug.Log("Combo 1");
+            if (Input.GetMouseButton(0))
+            {
+                attack();
+            }
         }
 
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            comboCount = 0;
-            realComboCount = 0;
-            endAttack();
-            Debug.Log("Combo Reset");
-        }
+
+
+
 
     }
 
-    // IEnumerator something()
-    // {
-    //     if (Time.time - lastAttackTime <= comboResetTime)
-    //     {
-    //         comboCount++;
-    //         realComboCount++;
-    //         //Debug.Log("Combo: " + comboCount);
-    //     }
 
-    //     attack();
-    //     lastAttackTime = Time.time;
-    //     yield return new WaitForSeconds(.5f);
-    // }
 
     public void attack()
     {
         lastAttackTime = Time.time;
-
         realComboCount++;
 
-        switch (realComboCount)
+        if (realComboCount == 1)
         {
-
-            case 0:
-                Debug.Log("Attack ZERO");
-                break;
-
-            case 1:
-                Debug.Log("Attack 1");
-                anim.SetBool("isAttacking", true);
-                break;
-
-            case 2:
-                anim.SetBool("isAttacking", true);
-                Debug.Log("Attack 2");
-                anim.SetTrigger("Combo1");
-                break;
-
-            case 3:
-                anim.SetBool("isAttacking", true);
-                Debug.Log("Attack 3");
-                anim.SetTrigger("Combo2");
-                break;
-
-            // case 4:
-            //     realComboCount = 0;
-            //     Debug.Log("Attack 4");
-            //     // anim.SetTrigger("Combo3");
-            //     break;
-
-            default:
-                realComboCount = 1;
-                Debug.Log("Cycling back to Attack 1");
-                anim.SetBool("isAttacking", true);
-                //Debug.Log("Max combo reached!");
-                break;
+            Debug.Log("Transitioning to Attack 1!");
+            anim.SetBool("attack1", true);
         }
+
+        realComboCount = Mathf.Clamp(realComboCount, 0, 3);
+        Debug.Log("Combo: " + realComboCount);
+
+        if (realComboCount >= 2 && anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && anim.GetCurrentAnimatorStateInfo(0).IsName("PlayerPunch")) //anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && anim.GetCurrentAnimatorStateInfo(0).IsName("attack1")
+        {
+            Debug.Log("Transitioning to Attack 2!");
+            anim.SetBool("attack1", false);
+            anim.SetBool("attack2", true);
+        }
+
+        if (realComboCount >= 3 && anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && anim.GetCurrentAnimatorStateInfo(0).IsName("PlayerPunch2")) //anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && anim.GetCurrentAnimatorStateInfo(0).IsName("attack2")
+        {
+            Debug.Log("Transitioning to Attack 3!");
+            anim.SetBool("attack2", false);
+            anim.SetBool("attack3", true);
+        }
+
     }
+
+
 
     public void attackCollide()
     {
@@ -153,22 +141,7 @@ public class FreeFlowCombatScript : MonoBehaviour
     }
 
 
-    public void endAttack()
-    {
-        anim.SetBool("isAttacking", false);
-    }
 
-    // For future use, make one endCombo method 
-    // and just put in an arguement for which combo to end
-    public void endCombo()
-    {
-        anim.ResetTrigger("Combo1");
-    }
-
-    public void endCombo2()
-    {
-        anim.ResetTrigger("Combo2");
-    }
 
     private void OnDrawGizmos()
     {
