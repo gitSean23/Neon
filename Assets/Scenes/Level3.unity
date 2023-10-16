@@ -370,6 +370,7 @@ GameObject:
   - component: {fileID: 193761424}
   - component: {fileID: 193761425}
   - component: {fileID: 193761426}
+  - component: {fileID: 193761427}
   m_Layer: 6
   m_Name: Enemy Right
   m_TagString: Enemy
@@ -493,6 +494,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 100
   currHealth: 0
+--- !u!114 &193761427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 193761421}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b922cd500f6fb471f86f377cf19f762d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 5
+  target: {fileID: 74745473}
+  minDistance: 4.5
 --- !u!1 &577899560
 GameObject:
   m_ObjectHideFlags: 0
@@ -505,6 +521,7 @@ GameObject:
   - component: {fileID: 577899563}
   - component: {fileID: 577899564}
   - component: {fileID: 577899565}
+  - component: {fileID: 577899566}
   m_Layer: 6
   m_Name: Enemy Middle
   m_TagString: Enemy
@@ -628,6 +645,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 100
   currHealth: 0
+--- !u!114 &577899566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 577899560}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b922cd500f6fb471f86f377cf19f762d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 5
+  target: {fileID: 74745473}
+  minDistance: 4.5
 --- !u!1 &771744956
 GameObject:
   m_ObjectHideFlags: 0
@@ -1297,6 +1329,7 @@ GameObject:
   - component: {fileID: 1771259292}
   - component: {fileID: 1771259293}
   - component: {fileID: 1771259294}
+  - component: {fileID: 1771259295}
   m_Layer: 6
   m_Name: Enemy Left
   m_TagString: Enemy
@@ -1420,6 +1453,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 100
   currHealth: 0
+--- !u!114 &1771259295
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1771259289}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b922cd500f6fb471f86f377cf19f762d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 5
+  target: {fileID: 74745473}
+  minDistance: 4.5
 --- !u!1 &1997288272
 GameObject:
   m_ObjectHideFlags: 0

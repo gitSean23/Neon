@@ -28,6 +28,11 @@ public class PlayerScript : MonoBehaviour
         Flip();
         animator.SetFloat("Speed", Mathf.Abs(horizontal));
 
+        // if (Input.GetMouseButtonDown(0))
+        // {
+        //     rb.AddForce(P)
+        // }
+
     }
 
     private void FixedUpdate()
