@@ -20,10 +20,18 @@ public class PlayerTeleport : MonoBehaviour
 
     private IEnumerator TeleportPlayer()
     {
-        yield return StartCoroutine(fadeController.FadeOut());
-        transform.position = currentTeleporter.GetComponent<Teleporter>().GetDestination().position;
-        yield return StartCoroutine(fadeController.FadeIn());
+        // Get the destination Transform from the Teleporter component
+        Transform destination = currentTeleporter.GetComponent<Teleporter>().GetDestination();
+
+        // Check if the destination is not null
+        if (destination != null)
+        {
+            yield return StartCoroutine(fadeController.FadeOut());
+            transform.position = destination.position;
+            yield return StartCoroutine(fadeController.FadeIn());
+        }
     }
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
