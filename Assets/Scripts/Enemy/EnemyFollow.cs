@@ -101,9 +101,9 @@ public class EnemyFollow : MonoBehaviour
     //     }
     // }
 
-    // private void OnDrawGizmos()
-    // {
-    //     Gizmos.DrawWireCube(enemySpace.transform.position, new Vector3(width, height, 1));
-    // }
+    private void OnDrawGizmos()
+    {
+        // Gizmos.DrawWireCube(enemySpace.GetComponent<Transform>().position, new Vector3(width, height, 1));
+    }
 }
 
