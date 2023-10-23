@@ -12,6 +12,8 @@ public class SoundScript : MonoBehaviour
     [SerializeField] public AudioClip lightWhoosh;
     [SerializeField] public AudioClip mediumWhoosh;
     [SerializeField] public AudioClip bgMusic;
+    [SerializeField] public AudioClip blackout;
+    [SerializeField] public AudioClip lightsOn;
 
     void Start()
     {
@@ -21,7 +23,7 @@ public class SoundScript : MonoBehaviour
     public void playMusic()
     {
         musicSrc.Play();
-        sfxSource.volume = 0.9f;
+        sfxSource.volume = 0.75f;
     }
 
     public void playSfx(AudioClip clip)

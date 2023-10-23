@@ -4174,6 +4174,8 @@ MonoBehaviour:
   lightWhoosh: {fileID: 8300000, guid: 95de592ec43e14e82bab00e5b6ccd21a, type: 3}
   mediumWhoosh: {fileID: 8300000, guid: 6dbf44513618a48d4a052c1c296b53bd, type: 3}
   bgMusic: {fileID: 8300000, guid: 3681c723f497048c0bde52370e18d169, type: 3}
+  blackout: {fileID: 8300000, guid: 5a5ed169f240745d5998a7ac1250b071, type: 3}
+  lightsOn: {fileID: 8300000, guid: d414d179f550542548e6b11127879594, type: 3}
 --- !u!1 &775296598
 GameObject:
   m_ObjectHideFlags: 0
@@ -6850,6 +6852,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1285105074}
+  - component: {fileID: 1285105075}
   m_Layer: 0
   m_Name: LightManager
   m_TagString: Untagged
@@ -6880,6 +6883,25 @@ Transform:
   - {fileID: 8946252}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1285105075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1285105073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3545eaa4958f14e2591733754dfb3c79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  floor1Lights: {fileID: 505592893}
+  floor2Lights: {fileID: 657399489}
+  floor3Lights: {fileID: 2111849056}
+  floor4Lights: {fileID: 1893122008}
+  floor5Lights: {fileID: 573847335}
+  floor6Lights: {fileID: 1853048273}
+  sound: {fileID: 771744956}
 --- !u!1 &1296822257
 GameObject:
   m_ObjectHideFlags: 0
