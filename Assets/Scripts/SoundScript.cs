@@ -16,6 +16,10 @@ public class SoundScript : MonoBehaviour
     void Start()
     {
         musicSrc.clip = bgMusic;
+    }
+
+    public void playMusic()
+    {
         musicSrc.Play();
         sfxSource.volume = 0.9f;
     }
