@@ -22,21 +22,54 @@ public class EnemyFollow : MonoBehaviour
 
     public Rigidbody2D rb;
 
+    public Animator anim;
+
+    float playerPositionX;
+
+    //public Vector enemyRotation;
+
 
 
     // Start is called before the first frame update
     void Start()
     {
-        enemyWillAttack = false;
+        rb = GetComponent<Rigidbody2D>();
+        anim.SetFloat("Health", 100);
+        //enemyWillAttack = false;
+        //enemyRotation = transform.rotation;
     }
 
     // Update is called once per frame
     void Update()
     {
+        playerPositionX = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>().position.x;
+        float directionToPlayer = Mathf.Abs(playerPositionX - transform.position.x);
+        Flip(playerPositionX);
+        //Vector2 directionToPlayer = player - transform.position.x;
         if (Vector2.Distance(transform.position, target.position) > minDistance)
         {
+            //transform.position = Vector2.MoveTowards(transform.position, new Vector3(target.position.x, transform.position.y, transform.position.z), speed * Time.deltaTime);
             transform.position = Vector2.MoveTowards(transform.position, new Vector3(target.position.x, transform.position.y, transform.position.z), speed * Time.deltaTime);
+            //rb.velocity = directionToPlayer.normalized * speed;
+            anim.SetFloat("Speed", speed);
+            //transform.position = Vector2.MoveTowards(transform.position, new Vector3(target.position.x, transform.position.y, transform.position.z), speed * Time.deltaTime);
         }
+
+        else
+        {
+            anim.SetFloat("Speed", 0);
+        }
+
+
+    }
+
+    void FixedUpdate()
+    {
+        // if (Vector2.Distance(transform.position, target.position) > minDistance)
+        // {
+        //     rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
+        //     //transform.position = Vector2.MoveTowards(transform.position, new Vector3(target.position.x, transform.position.y, transform.position.z), speed * Time.deltaTime);
+        // }
     }
 
     // void FixedUpdate()
@@ -62,6 +95,25 @@ public class EnemyFollow : MonoBehaviour
         {
             transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
         }
+    }
+
+    void Flip(float directionToPlayer)
+    {
+
+        // Determine if the player is to the left or right of the enemy
+        if (directionToPlayer < transform.position.x)
+        {
+            Debug.Log("Player is to the LEFT of me!");
+            // If the player is on the left, rotate the enemy to face left
+            transform.rotation = Quaternion.Euler(0, 180, 0); // Rotate 180 degrees around the Y-axis
+        }
+        else if (directionToPlayer > transform.position.x)
+        {
+            Debug.Log("Player is to the RIGHT of enemy!");
+            // If the player is on the right, rotate the enemy to face right
+            transform.rotation = Quaternion.Euler(0, 0, 0); // Reset to the default rotation
+        }
+
     }
 
     // IEnumerator ChasePlayer()

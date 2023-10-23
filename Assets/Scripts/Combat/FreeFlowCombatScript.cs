@@ -18,6 +18,7 @@ public class FreeFlowCombatScript : MonoBehaviour
     float maxComboDelay = 0.5f;
 
     private Animator anim;
+    //private Animator enemyAnim;
 
     public GameObject attackPoint;
 
@@ -30,6 +31,8 @@ public class FreeFlowCombatScript : MonoBehaviour
 
     SoundScript soundManager;
 
+    Coroutine enemyHitCoroutine;
+
     void Awake()
     {
         soundManager = GameObject.FindGameObjectWithTag("Sound").GetComponent<SoundScript>();
@@ -38,6 +41,7 @@ public class FreeFlowCombatScript : MonoBehaviour
     void Start()
     {
         anim = GetComponent<Animator>();
+        //enemyAnim = GetC
     }
 
     void Update()
@@ -218,10 +222,22 @@ public class FreeFlowCombatScript : MonoBehaviour
                 {
                     soundManager.playSfx(soundManager.lightPunch);
                     Debug.Log("ENEMY HIT!");
+                    enemyHitCoroutine = StartCoroutine(EnemyGotHit(enemyGameobject));
+                    //enemyGameobject.GetComponent<Animator>().SetBool("EnemyHit", true);
                     enemyGameobject.GetComponent<EnemyScript>().health -= dmg;
+                    enemyGameobject.GetComponent<Animator>().SetFloat("Health", enemyGameobject.GetComponent<EnemyScript>().health);
+                    //StopCoroutine(enemyHitCoroutine);
+                    //enemyGameobject.GetComponent<Animator>().SetBool("EnemyHit", false);
                 }
             }
         }
+    }
+
+    IEnumerator EnemyGotHit(Collider2D enemyGameobject)
+    {
+        enemyGameobject.GetComponent<Animator>().SetBool("EnemyHit", true);
+        yield return new WaitForSeconds(0.1f);
+        enemyGameobject.GetComponent<Animator>().SetBool("EnemyHit", false);
     }
 
 
