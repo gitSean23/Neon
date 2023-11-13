@@ -24,15 +24,18 @@ public class Blackout : MonoBehaviour
 
     void Update()
     {
+        // Make sure to ADD COOLDOWN later on
         if (Input.GetKeyDown(KeyCode.B))
         {
             TurnOffLights();
+            StartCoroutine(LightsCoroutine());
         }
+    }
 
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            TurnOnLights();
-        }
+    IEnumerator LightsCoroutine()
+    {
+        yield return new WaitForSeconds(10f);
+        TurnOnLights();
     }
     public void TurnOffLights()
     {

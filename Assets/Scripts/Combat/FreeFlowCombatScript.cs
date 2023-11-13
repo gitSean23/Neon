@@ -93,27 +93,9 @@ public class FreeFlowCombatScript : MonoBehaviour
         {
             if (Input.GetMouseButton(0))
             {
-                if (currentCombatMode == 0)
-                {
-                    Debug.Log("SWITCHING TO HUMAN MODE!");
-                    attack();
-                }
-                else
-                {
-                    Debug.Log("SWITCH TO AI MODE!");
-                    aiAttack();
-                }
-
+                attack();
             }
         }
-
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            changeCombatMode();
-            realComboCount = 0;
-        }
-
-
 
     }
 
@@ -150,57 +132,6 @@ public class FreeFlowCombatScript : MonoBehaviour
 
     }
 
-    public void aiAttack()
-    {
-        lastAttackTime = Time.time;
-        realComboCount++;
-
-        Debug.Log("REAL COMBO COUNT: " + realComboCount);
-
-        if (realComboCount == 1)
-        {
-            Debug.Log("Transitioning to AI Attack 1!");
-            anim.SetBool("aiAttack1", true);
-        }
-
-        realComboCount = Mathf.Clamp(realComboCount, 0, 2);
-        Debug.Log("AI Combo: " + realComboCount);
-
-        if (realComboCount >= 2 && anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && anim.GetCurrentAnimatorStateInfo(0).IsName("PlayerPunch4")) //anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && anim.GetCurrentAnimatorStateInfo(0).IsName("attack1")
-        {
-            Debug.Log("Transitioning to AI Attack 2!");
-            anim.SetBool("aiAttack1", false);
-            anim.SetBool("aiAttack2", true);
-        }
-
-        // if (realComboCount >= 3 && anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && anim.GetCurrentAnimatorStateInfo(0).IsName("PlayerPunch2")) //anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && anim.GetCurrentAnimatorStateInfo(0).IsName("attack2")
-        // {
-        //     Debug.Log("Transitioning to Attack 3!");
-        //     anim.SetBool("attack2", false);
-        //     anim.SetBool("attack3", true);
-        // }
-    }
-
-    void changeCombatMode()
-    {
-        print("Current Combat Mode: " + currentCombatMode);
-        if (currentCombatMode == 0)
-        {
-            currentCombatMode += 1;
-            anim.SetLayerWeight(currentCombatMode - 1, 0);
-            anim.SetLayerWeight(currentCombatMode, 1);
-        }
-
-        else
-        {
-            currentCombatMode -= 1;
-            anim.SetLayerWeight(currentCombatMode + 1, 0);
-            anim.SetLayerWeight(currentCombatMode, 1);
-        }
-
-    }
-
-
 
     public void attackCollide()
     {
@@ -235,9 +166,9 @@ public class FreeFlowCombatScript : MonoBehaviour
 
     IEnumerator EnemyGotHit(Collider2D enemyGameobject)
     {
-        enemyGameobject.GetComponent<Animator>().SetBool("EnemyHit", true);
+        enemyGameobject.GetComponent<Animator>().SetBool("isStunned", true);
         yield return new WaitForSeconds(0.1f);
-        enemyGameobject.GetComponent<Animator>().SetBool("EnemyHit", false);
+        enemyGameobject.GetComponent<Animator>().SetBool("isStunned", false);
     }
 
 
