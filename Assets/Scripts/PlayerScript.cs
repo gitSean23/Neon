@@ -19,12 +19,15 @@ public class PlayerScript : MonoBehaviour
 
     public Animator animator;
 
+    EnemyDetect enemyDetect;
+
 
     // Start is called before the first frame update
     void Start()
     {
         //transform.position = new Vector3(-0.125499994f, -0.0500000007f, 0.0f);
         health = 100f;
+        enemyDetect = GetComponent<EnemyDetect>();
     }
 
     // Update is called once per frame
@@ -54,8 +57,11 @@ public class PlayerScript : MonoBehaviour
 
     public void Flip()
     {
-        if (isFacingRight && horizontal < 0f || !isFacingRight && horizontal > 0f)
+        if (isFacingRight && horizontal < 0f || !isFacingRight && horizontal > 0f || Input.GetMouseButton(0) &&
+        (isFacingRight && enemyDetect.closestEnemy.transform.position.x < transform.position.x) || Input.GetMouseButton(0) &&
+        (!isFacingRight && enemyDetect.closestEnemy.transform.position.x > transform.position.x))
         {
+            Debug.Log("FLIP!");
             isFacingRight = !isFacingRight;
             Vector3 localScale = transform.localScale;
             localScale.x *= -1f;

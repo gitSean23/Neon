@@ -10,7 +10,7 @@ public class FreeFlowCombatScript : MonoBehaviour
     // public KeyCode resetButton = KeyCode.E;
 
     private float lastAttackTime = 0;
-    private int comboCount = 0;
+    //private int comboCount = 0;
     public static int realComboCount = 0;
 
     private float nextAttackTime = 0f;

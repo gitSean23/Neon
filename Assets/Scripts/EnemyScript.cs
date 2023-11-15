@@ -48,6 +48,8 @@ public class EnemyScript : MonoBehaviour
 
     SoundScript soundManager;
 
+    Coroutine playerHitCoroutine;
+
     void Awake()
     {
         soundManager = GameObject.FindGameObjectWithTag("Sound").GetComponent<SoundScript>();
@@ -189,15 +191,23 @@ public class EnemyScript : MonoBehaviour
                     soundManager.playSfx(soundManager.lightPunch);
                     Debug.Log("PLAYER HIT!");
                     // MODIFY THE LINE BELOW!
-                    // enemyHitCoroutine = StartCoroutine(EnemyGotHit(enemyGameobject));
+                    playerHitCoroutine = StartCoroutine(PlayerGotHit(playerGameobject));
                     //enemyGameobject.GetComponent<Animator>().SetBool("EnemyHit", true);
                     playerGameobject.GetComponent<PlayerScript>().health -= dmg;
-                    playerGameobject.GetComponent<Animator>().SetFloat("Health", playerGameobject.GetComponent<PlayerScript>().health);
-                    //StopCoroutine(enemyHitCoroutine);
+                    //playerGameobject.GetComponent<Animator>().SetFloat("Health", playerGameobject.GetComponent<PlayerScript>().health);
+                    //playerGameobject.GetComponent<Animator>().SetBool("isHurt", true);
+                    //StopCoroutine(playerHitCoroutine);
                     //enemyGameobject.GetComponent<Animator>().SetBool("EnemyHit", false);
                 }
             }
         }
+    }
+
+    IEnumerator PlayerGotHit(Collider2D playerGameobject)
+    {
+        playerGameobject.GetComponent<Animator>().SetBool("isHurt", true);
+        yield return new WaitForSeconds(0.1f);
+        playerGameobject.GetComponent<Animator>().SetBool("isHurt", false);
     }
 
     private void OnDrawGizmos()

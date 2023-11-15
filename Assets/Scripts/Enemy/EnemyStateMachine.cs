@@ -63,7 +63,13 @@ public class EnemyStateMachine : MonoBehaviour
                 //enemies.RemoveAt(pickedEnemyIndex);
                 continue;
             }
+
+            yield return new WaitForSeconds(0.5f);
             EnemyScript pickedEnemy = enemies[pickedEnemyIndex].GetComponent<EnemyScript>();
+            if (pickedEnemy == null)
+            {
+                continue;
+            }
             enemyRetreatPoint = pickedEnemy.transform.position.x;
             pickedEnemy.isIdle = false;
             pickedEnemy.isChasing = true;
@@ -75,6 +81,10 @@ public class EnemyStateMachine : MonoBehaviour
             yield return new WaitForSeconds(1f);
             pickedEnemy.isAttacking = false;
             pickedEnemy.isRetreating = true;
+            if (pickedEnemy == null)
+            {
+                continue;
+            }
             yield return new WaitUntil(() => Mathf.Abs(pickedEnemy.transform.position.x) >= Mathf.Abs(enemyRetreatPoint));
             pickedEnemy.isRetreating = false;
             pickedEnemy.isIdle = true;
