@@ -26,26 +26,41 @@ public class EnemyScript : MonoBehaviour
     public bool enemyWillAttack;
 
 
-    public LayerMask enemies;
+    //public LayerMask enemies;
 
     public Rigidbody2D rb;
 
     float playerPositionX;
 
-    private EnemyStateMachine enemyStateMachine;
+    public EnemyStateMachine enemyStateMachine;
 
     public float xOffset = 0.8f;
 
     public int enemyIndex;
 
+    public LayerMask player;
+
+    public float radius = 0.5f;
+
+    public GameObject attackPoint;
+
+    public float dmg = 10f;
+
+    SoundScript soundManager;
+
+    void Awake()
+    {
+        soundManager = GameObject.FindGameObjectWithTag("Sound").GetComponent<SoundScript>();
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        //enemyAnim = GetComponent<Animator>();
+
         rb = GetComponent<Rigidbody2D>();
         anim.SetFloat("Health", 100);
         xOffset = 0.8f;
+
     }
 
     // Update is called once per frame
@@ -57,33 +72,39 @@ public class EnemyScript : MonoBehaviour
             Debug.Log("ENEMY Attacked!");
         }
 
-        else if (health <= 0)
+        if (health <= 0)
         {
             Debug.Log("ENEMY DEAD!");
-            //WaitForSeconds(3f);
-            // ADD the Destroy() back in
-            //Destroy(gameObject);
+            isDead = true;
+
+            Debug.Log("Enemy List: " + enemyStateMachine.enemies);
+
+            if (enemyStateMachine != null)
+            {
+                enemyStateMachine.enemies.Remove(transform);
+            }
+
+            Destroy(gameObject);
         }
 
         if (isChasing)
         {
             // Moves the enemy towards the player
-            SetLayerCollision("Enemy", "Enemy", false);
-            SetLayerCollision("Enemy", "Foreground", false);
+            SetLayerCollision("Enemy", "Enemy", true);
+
             anim.SetBool("isChasing", true);
             playerPositionX = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>().position.x;
             float directionToPlayer = Mathf.Abs(playerPositionX - transform.position.x);
             Flip(playerPositionX);
             Vector2 targetPosition = new Vector2(target.position.x + Mathf.Sign(transform.position.x - target.position.x) * xOffset, transform.position.y);
 
-            //transform.position = Vector2.MoveTowards(transform.position, new Vector3(target.position.x, transform.position.y, transform.position.z), speed * Time.deltaTime);
             transform.position = Vector2.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
         }
 
         if (!isChasing)
         {
-            SetLayerCollision("Enemy", "Enemy", true);
-            SetLayerCollision("Enemy", "Foreground", true);
+            SetLayerCollision("Enemy", "Enemy", false);
+
             anim.SetBool("isChasing", false);
         }
 
@@ -100,25 +121,38 @@ public class EnemyScript : MonoBehaviour
 
         if (isRetreating)
         {
+            SetLayerCollision("Enemy", "Enemy", true);
+
+            anim.SetBool("isRetreating", true);
             Debug.Log("Enemy Retreating");
+            Debug.Log("Enemy Retreat Point: " + enemyStateMachine.enemyRetreatPoint);
+            transform.position = Vector2.MoveTowards(transform.position, new Vector3(enemyStateMachine.enemyRetreatPoint, transform.position.y, transform.position.z), speed * Time.deltaTime);
+            anim.SetFloat("Speed", speed);
             return;
+        }
+
+        if (!isRetreating)
+        {
+            SetLayerCollision("Enemy", "Enemy", false);
+
+            anim.SetBool("isRetreating", false);
         }
 
         else
         {
             // enemy is idle
-            //anim.SetBool
+
             playerPositionX = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>().position.x;
             float directionToPlayer = Mathf.Abs(playerPositionX - transform.position.x);
             Flip(playerPositionX);
-            //Vector2 directionToPlayer = player - transform.position.x;
+
             if (Vector2.Distance(transform.position, target.position) > minDistance)
             {
-                //transform.position = Vector2.MoveTowards(transform.position, new Vector3(target.position.x, transform.position.y, transform.position.z), speed * Time.deltaTime);
+
                 transform.position = Vector2.MoveTowards(transform.position, new Vector3(target.position.x, transform.position.y, transform.position.z), speed * Time.deltaTime);
-                //rb.velocity = directionToPlayer.normalized * speed;
+
                 anim.SetFloat("Speed", speed);
-                //transform.position = Vector2.MoveTowards(transform.position, new Vector3(target.position.x, transform.position.y, transform.position.z), speed * Time.deltaTime);
+
             }
 
             else
@@ -130,9 +164,45 @@ public class EnemyScript : MonoBehaviour
 
     public void enemyDeath()
     {
-        //enemyStateMachine.enemies.RemoveAt(enemyStateMachine.pickedEnemyIndex);
-        isDead = true;
+        // enemyStateMachine.enemies.RemoveAt(enemyStateMachine.pickedEnemyIndex);
+        // Debug.Log("Enemy List: " + enemyStateMachine.enemies);
+        // isDead = true;
         //Destroy(gameObject);
+    }
+
+    public void enemyDamage()
+    {
+        Collider2D[] thePlayer = Physics2D.OverlapCircleAll(attackPoint.transform.position, radius, player);
+
+        if (thePlayer.Length < 1)
+        {
+            soundManager.playSfx(soundManager.lightWhoosh);
+            Debug.Log("No player to hit in range..");
+        }
+
+        else
+        {
+            foreach (Collider2D playerGameobject in thePlayer)
+            {
+                if (playerGameobject != null)
+                {
+                    soundManager.playSfx(soundManager.lightPunch);
+                    Debug.Log("PLAYER HIT!");
+                    // MODIFY THE LINE BELOW!
+                    // enemyHitCoroutine = StartCoroutine(EnemyGotHit(enemyGameobject));
+                    //enemyGameobject.GetComponent<Animator>().SetBool("EnemyHit", true);
+                    playerGameobject.GetComponent<PlayerScript>().health -= dmg;
+                    playerGameobject.GetComponent<Animator>().SetFloat("Health", playerGameobject.GetComponent<PlayerScript>().health);
+                    //StopCoroutine(enemyHitCoroutine);
+                    //enemyGameobject.GetComponent<Animator>().SetBool("EnemyHit", false);
+                }
+            }
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(attackPoint.transform.position, radius);
     }
 
     void Flip(float directionToPlayer)
@@ -156,9 +226,11 @@ public class EnemyScript : MonoBehaviour
 
     void SetLayerCollision(string layer1, string layer2, bool enableCollision)
     {
+
         int layer1Index = LayerMask.NameToLayer(layer1);
         int layer2Index = LayerMask.NameToLayer(layer2);
 
-        Physics2D.IgnoreLayerCollision(layer1Index, layer2Index, enableCollision);
+
+        Physics2D.IgnoreLayerCollision(layer1Index, layer2Index, !enableCollision);
     }
 }

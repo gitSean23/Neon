@@ -17,7 +17,8 @@ public class EnemyDetect : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        // if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetMouseButton(0))
         {
             GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
             GameObject closestEnemy = null;
@@ -54,6 +55,7 @@ public class EnemyDetect : MonoBehaviour
     void MoveToTarget(GameObject target, float duration)
     {
         //transform.DOLookAt(target.transform.position, .2f);
+        gameObject.GetComponent<PlayerScript>().Flip();
         transform.DOMove(TargetOffset(target.transform), duration);
     }
 

@@ -1,12 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerScript : MonoBehaviour
 {
     private float horizontal;
     private float speed = 8f;
     private bool isFacingRight = true;
+
+    public float health;
+
+    Scene currentScene;
 
     private GameObject player;
 
@@ -19,6 +24,7 @@ public class PlayerScript : MonoBehaviour
     void Start()
     {
         //transform.position = new Vector3(-0.125499994f, -0.0500000007f, 0.0f);
+        health = 100f;
     }
 
     // Update is called once per frame
@@ -32,7 +38,12 @@ public class PlayerScript : MonoBehaviour
         // {
         //     rb.AddForce(P)
         // }
-
+        if (health <= 0)
+        {
+            Debug.Log("YOU DIED!");
+            currentScene = SceneManager.GetActiveScene();
+            SceneManager.LoadScene(currentScene.name);
+        }
     }
 
     private void FixedUpdate()
@@ -41,7 +52,7 @@ public class PlayerScript : MonoBehaviour
         // rb.AddForce(Physics.gravity, ForceMode2D.Acceleration);
     }
 
-    private void Flip()
+    public void Flip()
     {
         if (isFacingRight && horizontal < 0f || !isFacingRight && horizontal > 0f)
         {
