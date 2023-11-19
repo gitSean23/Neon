@@ -166,9 +166,21 @@ public class FreeFlowCombatScript : MonoBehaviour
 
     IEnumerator EnemyGotHit(Collider2D enemyGameobject)
     {
-        enemyGameobject.GetComponent<Animator>().SetBool("isStunned", true);
-        yield return new WaitForSeconds(0.1f);
-        enemyGameobject.GetComponent<Animator>().SetBool("isStunned", false);
+        if (enemyGameobject != null)
+        {
+            if (enemyGameobject.GetComponent<Animator>() != null)
+            {
+                enemyGameobject.GetComponent<Animator>().SetBool("isStunned", true);
+                yield return new WaitForSeconds(0.1f);
+                enemyGameobject.GetComponent<Animator>().SetBool("isStunned", false);
+            }
+        }
+
+        else
+        {
+            Debug.Log("Enemy prob died..");
+            yield return null;
+        }
     }
 
 

@@ -192,12 +192,8 @@ public class EnemyScript : MonoBehaviour
                     Debug.Log("PLAYER HIT!");
                     // MODIFY THE LINE BELOW!
                     playerHitCoroutine = StartCoroutine(PlayerGotHit(playerGameobject));
-                    //enemyGameobject.GetComponent<Animator>().SetBool("EnemyHit", true);
                     playerGameobject.GetComponent<PlayerScript>().health -= dmg;
-                    //playerGameobject.GetComponent<Animator>().SetFloat("Health", playerGameobject.GetComponent<PlayerScript>().health);
-                    //playerGameobject.GetComponent<Animator>().SetBool("isHurt", true);
-                    //StopCoroutine(playerHitCoroutine);
-                    //enemyGameobject.GetComponent<Animator>().SetBool("EnemyHit", false);
+
                 }
             }
         }
@@ -205,9 +201,13 @@ public class EnemyScript : MonoBehaviour
 
     IEnumerator PlayerGotHit(Collider2D playerGameobject)
     {
-        playerGameobject.GetComponent<Animator>().SetBool("isHurt", true);
-        yield return new WaitForSeconds(0.1f);
-        playerGameobject.GetComponent<Animator>().SetBool("isHurt", false);
+        if (GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>().health > 0)
+        {
+            playerGameobject.GetComponent<Animator>().SetBool("isHurt", true);
+            yield return new WaitForSeconds(0.1f);
+            playerGameobject.GetComponent<Animator>().SetBool("isHurt", false);
+        }
+
     }
 
     private void OnDrawGizmos()

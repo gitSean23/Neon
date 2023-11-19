@@ -25,9 +25,9 @@ public class PlayerScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //transform.position = new Vector3(-0.125499994f, -0.0500000007f, 0.0f);
         health = 100f;
         enemyDetect = GetComponent<EnemyDetect>();
+        animator.SetBool("isDead", false);
     }
 
     // Update is called once per frame
@@ -37,22 +37,22 @@ public class PlayerScript : MonoBehaviour
         Flip();
         animator.SetFloat("Speed", Mathf.Abs(horizontal));
 
-        // if (Input.GetMouseButtonDown(0))
-        // {
-        //     rb.AddForce(P)
-        // }
+
         if (health <= 0)
         {
             Debug.Log("YOU DIED!");
-            currentScene = SceneManager.GetActiveScene();
-            SceneManager.LoadScene(currentScene.name);
+            animator.SetBool("isDead", true);
         }
     }
 
+    public void playerDeath()
+    {
+        currentScene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(currentScene.name);
+    }
     private void FixedUpdate()
     {
         rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
-        // rb.AddForce(Physics.gravity, ForceMode2D.Acceleration);
     }
 
     public void Flip()

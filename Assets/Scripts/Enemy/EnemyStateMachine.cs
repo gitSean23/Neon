@@ -53,10 +53,12 @@ public class EnemyStateMachine : MonoBehaviour
 
     IEnumerator EnemyCycle()
     {
+        Debug.Log("First enemy count: " + enemies.Count);
         while (enemies.Count > 0)
         {
 
             int randNum = Random.Range(0, enemies.Count);
+            Debug.Log("Enemy Count: " + enemies.Count);
             pickedEnemyIndex = randNum;
             if (enemies[pickedEnemyIndex] == null)
             {
@@ -64,33 +66,35 @@ public class EnemyStateMachine : MonoBehaviour
                 continue;
             }
 
-            yield return new WaitForSeconds(0.5f);
-            EnemyScript pickedEnemy = enemies[pickedEnemyIndex].GetComponent<EnemyScript>();
-            if (pickedEnemy == null)
+            if (enemies[pickedEnemyIndex] != null)
             {
-                continue;
+                EnemyScript pickedEnemy = enemies[pickedEnemyIndex].GetComponent<EnemyScript>();
+                if (pickedEnemy == null)
+                {
+                    continue;
+                }
+                enemyRetreatPoint = pickedEnemy.transform.position.x;
+                pickedEnemy.isIdle = false;
+                pickedEnemy.isChasing = true;
+
+                yield return new WaitUntil(() => Mathf.Abs(pickedEnemy.transform.position.x - GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>().position.x) <= attackRange);
+
+                pickedEnemy.isChasing = false;
+                pickedEnemy.isAttacking = true;
+                yield return new WaitForSeconds(1f);
+                pickedEnemy.isAttacking = false;
+                pickedEnemy.isRetreating = true;
+                if (pickedEnemy == null)
+                {
+                    continue;
+                }
+                yield return new WaitUntil(() => Mathf.Abs(pickedEnemy.transform.position.x) >= Mathf.Abs(enemyRetreatPoint));
+                pickedEnemy.isRetreating = false;
+                pickedEnemy.isIdle = true;
+
+                Debug.Log("Enemy Count: " + enemies.Count);
+                yield return new WaitForSeconds(0.5f);
             }
-            enemyRetreatPoint = pickedEnemy.transform.position.x;
-            pickedEnemy.isIdle = false;
-            pickedEnemy.isChasing = true;
-
-            yield return new WaitUntil(() => Mathf.Abs(pickedEnemy.transform.position.x - GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>().position.x) <= attackRange);
-
-            pickedEnemy.isChasing = false;
-            pickedEnemy.isAttacking = true;
-            yield return new WaitForSeconds(1f);
-            pickedEnemy.isAttacking = false;
-            pickedEnemy.isRetreating = true;
-            if (pickedEnemy == null)
-            {
-                continue;
-            }
-            yield return new WaitUntil(() => Mathf.Abs(pickedEnemy.transform.position.x) >= Mathf.Abs(enemyRetreatPoint));
-            pickedEnemy.isRetreating = false;
-            pickedEnemy.isIdle = true;
-
-            Debug.Log("Enemy Count: " + enemies.Count);
-            yield return new WaitForSeconds(0.5f);
         }
 
         StopCoroutine(enemyCycle);
