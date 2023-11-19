@@ -64,25 +64,31 @@ public class FreeFlowCombatScript : MonoBehaviour
             {
                 Debug.Log("Ending attack3");
                 anim.SetBool("attack3", false);
-                realComboCount = 0;
+            }
+
+            if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && anim.GetCurrentAnimatorStateInfo(0).IsName("PlayerKick2")) // anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && 
+            {
+                Debug.Log("Ending attack4");
+                anim.SetBool("attack4", false);
+                realComboCount = 0; // ONLY put this line on the last move of the combo
             }
         }
 
-        if (currentCombatMode == 1)
-        {
-            if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && anim.GetCurrentAnimatorStateInfo(0).IsName("playerPunch3")) // anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && 
-            {
-                Debug.Log("Ending AI attack1");
-                anim.SetBool("aiAttack1", false);
-            }
+        // if (currentCombatMode == 1)
+        // {
+        //     if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && anim.GetCurrentAnimatorStateInfo(0).IsName("playerPunch3")) // anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && 
+        //     {
+        //         Debug.Log("Ending AI attack1");
+        //         anim.SetBool("aiAttack1", false);
+        //     }
 
-            if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && anim.GetCurrentAnimatorStateInfo(0).IsName("PlayerPunch4")) // anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && 
-            {
-                Debug.Log("Ending AI attack2");
-                anim.SetBool("aiAttack2", false);
-                realComboCount = 0;
-            }
-        }
+        //     if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && anim.GetCurrentAnimatorStateInfo(0).IsName("PlayerPunch4")) // anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && 
+        //     {
+        //         Debug.Log("Ending AI attack2");
+        //         anim.SetBool("aiAttack2", false);
+        //         realComboCount = 0;
+        //     }
+        // }
 
         if (Time.time - lastAttackTime > maxComboDelay || Input.GetKeyDown(KeyCode.E))
         {
@@ -113,7 +119,7 @@ public class FreeFlowCombatScript : MonoBehaviour
             anim.SetBool("attack1", true);
         }
 
-        realComboCount = Mathf.Clamp(realComboCount, 0, 3);
+        realComboCount = Mathf.Clamp(realComboCount, 0, 4); // Update the last number whenever you add or remove an attack
         Debug.Log("Human Combo: " + realComboCount);
 
         if (realComboCount >= 2 && anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && anim.GetCurrentAnimatorStateInfo(0).IsName("PlayerPunch")) //anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && anim.GetCurrentAnimatorStateInfo(0).IsName("attack1")
@@ -128,6 +134,13 @@ public class FreeFlowCombatScript : MonoBehaviour
             Debug.Log("Transitioning to Attack 3!");
             anim.SetBool("attack2", false);
             anim.SetBool("attack3", true);
+        }
+
+        if (realComboCount >= 4 && anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && anim.GetCurrentAnimatorStateInfo(0).IsName("Player_Light_Kick")) //anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && anim.GetCurrentAnimatorStateInfo(0).IsName("attack2")
+        {
+            Debug.Log("Transitioning to Attack 4!");
+            anim.SetBool("attack3", false);
+            anim.SetBool("attack4", true);
         }
 
     }
