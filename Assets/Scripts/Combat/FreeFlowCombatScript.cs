@@ -6,11 +6,10 @@ using DG.Tweening;
 public class FreeFlowCombatScript : MonoBehaviour
 {
     public float comboResetTime = 0.8f;
-    // public KeyCode attackButton = KeyCode.F;
-    // public KeyCode resetButton = KeyCode.E;
+
 
     private float lastAttackTime = 0;
-    //private int comboCount = 0;
+
     public static int realComboCount = 0;
 
     private float nextAttackTime = 0f;
@@ -18,7 +17,6 @@ public class FreeFlowCombatScript : MonoBehaviour
     float maxComboDelay = 0.5f;
 
     private Animator anim;
-    //private Animator enemyAnim;
 
     public GameObject attackPoint;
 
@@ -41,7 +39,6 @@ public class FreeFlowCombatScript : MonoBehaviour
     void Start()
     {
         anim = GetComponent<Animator>();
-        //enemyAnim = GetC
     }
 
     void Update()
@@ -74,21 +71,6 @@ public class FreeFlowCombatScript : MonoBehaviour
             }
         }
 
-        // if (currentCombatMode == 1)
-        // {
-        //     if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && anim.GetCurrentAnimatorStateInfo(0).IsName("playerPunch3")) // anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && 
-        //     {
-        //         Debug.Log("Ending AI attack1");
-        //         anim.SetBool("aiAttack1", false);
-        //     }
-
-        //     if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && anim.GetCurrentAnimatorStateInfo(0).IsName("PlayerPunch4")) // anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && 
-        //     {
-        //         Debug.Log("Ending AI attack2");
-        //         anim.SetBool("aiAttack2", false);
-        //         realComboCount = 0;
-        //     }
-        // }
 
         if (Time.time - lastAttackTime > maxComboDelay || Input.GetKeyDown(KeyCode.E))
         {
@@ -104,7 +86,6 @@ public class FreeFlowCombatScript : MonoBehaviour
         }
 
     }
-
 
 
     public void attack()
@@ -148,7 +129,6 @@ public class FreeFlowCombatScript : MonoBehaviour
 
     public void attackCollide()
     {
-        //Debug.Log("Collide detection activated..");
 
         Collider2D[] enemy = Physics2D.OverlapCircleAll(attackPoint.transform.position, radius, enemies);
 
