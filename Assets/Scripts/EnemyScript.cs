@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyScript : MonoBehaviour
 {
-
+    public Image playerHealthBar;
     public float health;
     public float currHealth;
     public bool isAttacking = false;
@@ -50,6 +51,9 @@ public class EnemyScript : MonoBehaviour
 
     Coroutine playerHitCoroutine;
 
+    // Enemy Alert variables
+    public GameObject alertIcon; // Reference to the alert icon GameObject
+
     void Awake()
     {
         soundManager = GameObject.FindGameObjectWithTag("Sound").GetComponent<SoundScript>();
@@ -92,6 +96,8 @@ public class EnemyScript : MonoBehaviour
         if (isChasing)
         {
             // Moves the enemy towards the player
+            alertIcon.SetActive(true);
+
             SetLayerCollision("Enemy", "Enemy", true);
 
             anim.SetBool("isChasing", true);
@@ -108,6 +114,7 @@ public class EnemyScript : MonoBehaviour
             SetLayerCollision("Enemy", "Enemy", false);
 
             anim.SetBool("isChasing", false);
+            alertIcon.SetActive(false);
         }
 
         if (isAttacking)
@@ -193,6 +200,7 @@ public class EnemyScript : MonoBehaviour
                     // MODIFY THE LINE BELOW!
                     playerHitCoroutine = StartCoroutine(PlayerGotHit(playerGameobject));
                     playerGameobject.GetComponent<PlayerScript>().health -= dmg;
+                    playerHealthBar.fillAmount = playerGameobject.GetComponent<PlayerScript>().health / 100f;
 
                 }
             }
@@ -243,4 +251,5 @@ public class EnemyScript : MonoBehaviour
 
         Physics2D.IgnoreLayerCollision(layer1Index, layer2Index, !enableCollision);
     }
+
 }

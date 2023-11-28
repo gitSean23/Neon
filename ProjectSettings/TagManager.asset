@@ -7,6 +7,7 @@ TagManager:
   - Enemy
   - Sound
   - Teleporter
+  - EnemyManager
   layers:
   - Default
   - TransparentFX

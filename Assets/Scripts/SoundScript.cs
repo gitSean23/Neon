@@ -11,6 +11,8 @@ public class SoundScript : MonoBehaviour
     [SerializeField] public AudioClip mediumPunch;
     [SerializeField] public AudioClip lightWhoosh;
     [SerializeField] public AudioClip mediumWhoosh;
+    [SerializeField] public AudioClip finisherWhoosh;
+    [SerializeField] public AudioClip finisherPunch;
     [SerializeField] public AudioClip bgMusic;
     [SerializeField] public AudioClip blackout;
     [SerializeField] public AudioClip lightsOn;

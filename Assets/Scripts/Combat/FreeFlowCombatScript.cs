@@ -25,6 +25,8 @@ public class FreeFlowCombatScript : MonoBehaviour
     public LayerMask enemies;
 
     public float dmg = 15;
+
+    public float finisherDmg = 100;
     int currentCombatMode = 0;
 
     SoundScript soundManager;
@@ -43,32 +45,38 @@ public class FreeFlowCombatScript : MonoBehaviour
 
     void Update()
     {
-        if (currentCombatMode == 0)
+
+        if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && anim.GetCurrentAnimatorStateInfo(0).IsName("PlayerPunch")) //anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && 
         {
-            if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && anim.GetCurrentAnimatorStateInfo(0).IsName("PlayerPunch")) //anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && 
-            {
-                Debug.Log("Ending attack1");
-                anim.SetBool("attack1", false);
-            }
+            Debug.Log("Ending attack1");
+            anim.SetBool("attack1", false);
+        }
 
-            if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && anim.GetCurrentAnimatorStateInfo(0).IsName("PlayerPunch2")) // anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f &&
-            {
-                Debug.Log("Ending attack2");
-                anim.SetBool("attack2", false);
-            }
+        if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && anim.GetCurrentAnimatorStateInfo(0).IsName("PlayerPunch2")) // anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f &&
+        {
+            Debug.Log("Ending attack2");
+            anim.SetBool("attack2", false);
+        }
 
-            if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && anim.GetCurrentAnimatorStateInfo(0).IsName("Player_Light_Kick")) // anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && 
-            {
-                Debug.Log("Ending attack3");
-                anim.SetBool("attack3", false);
-            }
+        if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && anim.GetCurrentAnimatorStateInfo(0).IsName("Player_Light_Kick")) // anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && 
+        {
+            Debug.Log("Ending attack3");
+            anim.SetBool("attack3", false);
+        }
 
-            if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && anim.GetCurrentAnimatorStateInfo(0).IsName("PlayerKick2")) // anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && 
-            {
-                Debug.Log("Ending attack4");
-                anim.SetBool("attack4", false);
-                realComboCount = 0; // ONLY put this line on the last move of the combo
-            }
+        if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && anim.GetCurrentAnimatorStateInfo(0).IsName("PlayerKick2")) // anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && 
+        {
+            Debug.Log("Ending attack4");
+            anim.SetBool("attack4", false);
+            //realComboCount = 0;
+
+        }
+
+        if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && anim.GetCurrentAnimatorStateInfo(0).IsName("PlayerPunch3")) // anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && 
+        {
+            Debug.Log("Ending attack5");
+            anim.SetBool("attack5", false);
+            realComboCount = 0; // ONLY put this line on the last move of the combo
         }
 
 
@@ -100,8 +108,7 @@ public class FreeFlowCombatScript : MonoBehaviour
             anim.SetBool("attack1", true);
         }
 
-        realComboCount = Mathf.Clamp(realComboCount, 0, 4); // Update the last number whenever you add or remove an attack
-        Debug.Log("Human Combo: " + realComboCount);
+        realComboCount = Mathf.Clamp(realComboCount, 0, 5); // Update the last number whenever you add or remove an attack
 
         if (realComboCount >= 2 && anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && anim.GetCurrentAnimatorStateInfo(0).IsName("PlayerPunch")) //anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && anim.GetCurrentAnimatorStateInfo(0).IsName("attack1")
         {
@@ -122,6 +129,13 @@ public class FreeFlowCombatScript : MonoBehaviour
             Debug.Log("Transitioning to Attack 4!");
             anim.SetBool("attack3", false);
             anim.SetBool("attack4", true);
+        }
+
+        if (realComboCount >= 5 && anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && anim.GetCurrentAnimatorStateInfo(0).IsName("PlayerPunch3")) //anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && anim.GetCurrentAnimatorStateInfo(0).IsName("attack2")
+        {
+            Debug.Log("Transitioning to Attack 5!");
+            anim.SetBool("attack4", false);
+            anim.SetBool("attack5", true);
         }
 
     }
@@ -157,6 +171,36 @@ public class FreeFlowCombatScript : MonoBehaviour
         }
     }
 
+    public void attackCollideFinisher()
+    {
+
+        Collider2D[] enemy = Physics2D.OverlapCircleAll(attackPoint.transform.position, radius, enemies);
+
+        if (enemy.Length < 1)
+        {
+            soundManager.playSfx(soundManager.lightWhoosh);
+            Debug.Log("No enemies to hit in range..");
+        }
+
+        else
+        {
+            foreach (Collider2D enemyGameobject in enemy)
+            {
+                if (enemyGameobject != null)
+                {
+                    soundManager.playSfx(soundManager.finisherPunch);
+                    Debug.Log("ENEMY HIT!");
+                    enemyHitCoroutine = StartCoroutine(EnemyGotHit(enemyGameobject));
+                    //enemyGameobject.GetComponent<Animator>().SetBool("EnemyHit", true);
+                    enemyGameobject.GetComponent<EnemyScript>().health -= finisherDmg;
+                    enemyGameobject.GetComponent<Animator>().SetFloat("Health", enemyGameobject.GetComponent<EnemyScript>().health);
+                    //StopCoroutine(enemyHitCoroutine);
+                    //enemyGameobject.GetComponent<Animator>().SetBool("EnemyHit", false);
+                }
+            }
+        }
+    }
+
     IEnumerator EnemyGotHit(Collider2D enemyGameobject)
     {
         if (enemyGameobject != null)
@@ -165,7 +209,11 @@ public class FreeFlowCombatScript : MonoBehaviour
             {
                 enemyGameobject.GetComponent<Animator>().SetBool("isStunned", true);
                 yield return new WaitForSeconds(0.1f);
-                enemyGameobject.GetComponent<Animator>().SetBool("isStunned", false);
+
+                if (enemyGameobject)
+                {
+                    enemyGameobject.GetComponent<Animator>().SetBool("isStunned", false);
+                }
             }
         }
 

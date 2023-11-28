@@ -69,35 +69,63 @@ public class EnemyStateMachine : MonoBehaviour
             if (enemies[pickedEnemyIndex] != null)
             {
                 EnemyScript pickedEnemy = enemies[pickedEnemyIndex].GetComponent<EnemyScript>();
+
                 if (pickedEnemy == null)
                 {
                     continue;
                 }
+
                 enemyRetreatPoint = pickedEnemy.transform.position.x;
                 pickedEnemy.isIdle = false;
                 pickedEnemy.isChasing = true;
 
-                yield return new WaitUntil(() => Mathf.Abs(pickedEnemy.transform.position.x - GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>().position.x) <= attackRange);
-
-                pickedEnemy.isChasing = false;
-                pickedEnemy.isAttacking = true;
-                yield return new WaitForSeconds(1f);
-                pickedEnemy.isAttacking = false;
-                pickedEnemy.isRetreating = true;
                 if (pickedEnemy == null)
                 {
                     continue;
                 }
-                yield return new WaitUntil(() => Mathf.Abs(pickedEnemy.transform.position.x) >= Mathf.Abs(enemyRetreatPoint));
+
+                yield return new WaitUntil(() => pickedEnemy == null || Mathf.Abs(pickedEnemy.transform.position.x - GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>().position.x) <= attackRange);
+
+                if (pickedEnemy == null)
+                {
+                    continue;
+                }
+
+                pickedEnemy.isChasing = false;
+                pickedEnemy.isAttacking = true;
+
+                yield return new WaitForSeconds(1f);
+
+                pickedEnemy.isAttacking = false;
+                pickedEnemy.isRetreating = true;
+
+                if (pickedEnemy == null)
+                {
+                    continue;
+                }
+
+                yield return new WaitUntil(() => pickedEnemy == null || Mathf.Abs(pickedEnemy.transform.position.x) >= Mathf.Abs(enemyRetreatPoint));
+
+                if (pickedEnemy == null)
+                {
+                    continue;
+                }
+
                 pickedEnemy.isRetreating = false;
                 pickedEnemy.isIdle = true;
 
                 Debug.Log("Enemy Count: " + enemies.Count);
+
                 yield return new WaitForSeconds(0.5f);
             }
         }
 
         StopCoroutine(enemyCycle);
         enemyCycle = null;
+    }
+
+    public int GetEnemyCount()
+    {
+        return enemies.Count;
     }
 }
