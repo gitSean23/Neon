@@ -20,7 +20,7 @@ public class PlayerSave : MonoBehaviour
         {
             Debug.Log("Nano 1 ability unlocked and saved!");
             saveSystem.SaveData("nano1");
-            saveSystem.LoadData();
+            //saveSystem.LoadData();
 
         }
 
@@ -28,7 +28,9 @@ public class PlayerSave : MonoBehaviour
         {
             Debug.Log("MAKING NEW GAME!");
             saveSystem.SaveData("new");
-            saveSystem.LoadData();
+            // PlayerData playerData = new PlayerData();
+            // playerData.abilities.Add("human1")
+            //saveSystem.LoadData();
         }
     }
 }

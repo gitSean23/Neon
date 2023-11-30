@@ -89,12 +89,12 @@ public class Abilities : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.V) && nano1)
+        if (Input.GetKeyDown(KeyCode.V) && PlayerPrefs.GetString("nano1") == "true")
         {
             Debug.Log("NANO 1 ACTIVATED!");
         }
 
-        if (Input.GetKeyDown(KeyCode.V) && nano1 == false)
+        if (Input.GetKeyDown(KeyCode.V) && PlayerPrefs.GetString("nano1") == "false")
         {
             Debug.Log("YOU HAVEN'T UNLOCKED NANO 1 YET!");
         }

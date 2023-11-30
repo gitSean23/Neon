@@ -1,13 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
-public class SaveSystem : MonoBehaviour
+public class SaveSystem : MonoBehaviour // Add static class for JSON
 {
-
+    //private static string savePath => $"{Application.persistentDataPath}/playerdata.json";
     // WHEN TO SAVE DATA:
     // - When player unlocks an ability
     // - when player completes a level
+
+    // public static void SavePlayerData(PlayerData data)
+    // {
+    //     string json = JsonUtility.ToJson(data);
+    //     File.WriteAllText(savePath, json);
+    // }
+
+    // public static PlayerData LoadPlayerData()
+    // {
+    //     if (File.Exists(savePath))
+    //     {
+    //         string json = File.ReadAllText(savePath);
+    //         return JsonUtility.FromJson<PlayerData>(json);
+    //     }
+
+    //     return new PlayerData();
+    // }
     public void SaveData(string data)
     {
 
@@ -37,6 +55,7 @@ public class SaveSystem : MonoBehaviour
         }
 
         PlayerPrefs.SetString(data, "true");
+        PlayerPrefs.Save();
 
     }
 

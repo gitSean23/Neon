@@ -21,7 +21,7 @@ public class EnemyStateMachine : MonoBehaviour
 
     float playerPositionX;
 
-    public float attackRange = 1.2f;
+    [SerializeField] public float attackRange;
 
     public float enemyRetreatPoint;
 
@@ -30,7 +30,7 @@ public class EnemyStateMachine : MonoBehaviour
     void Start()
     {
 
-        attackRange = 1.2f;
+        //attackRange = 1.2f;
         foreach (Transform enemy in transform)
         {
             count++;

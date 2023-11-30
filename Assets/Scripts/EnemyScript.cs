@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class EnemyScript : MonoBehaviour
 {
@@ -53,6 +54,9 @@ public class EnemyScript : MonoBehaviour
 
     // Enemy Alert variables
     public GameObject alertIcon; // Reference to the alert icon GameObject
+
+    // Gravity guy variables
+    public Transform playerTransform;
 
     void Awake()
     {
@@ -250,6 +254,21 @@ public class EnemyScript : MonoBehaviour
 
 
         Physics2D.IgnoreLayerCollision(layer1Index, layer2Index, !enableCollision);
+    }
+
+    // SPECIAL ENEMY ATTACKS
+
+    public void Pull()
+    {
+        playerTransform.DOMove(TargetOffset(transform), .65f);
+    }
+
+    // For gravity pull
+    public Vector2 TargetOffset(Transform target)
+    {
+        Vector2 position;
+        position = target.position;
+        return Vector2.MoveTowards(position, transform.position, .95f);
     }
 
 }
