@@ -10,6 +10,7 @@ public class PlayerSave : MonoBehaviour
     void Start()
     {
         saveSystem.LoadData();
+
     }
 
     // Update is called once per frame

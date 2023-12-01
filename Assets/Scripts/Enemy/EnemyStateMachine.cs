@@ -22,6 +22,7 @@ public class EnemyStateMachine : MonoBehaviour
     float playerPositionX;
 
     [SerializeField] public float attackRange;
+    [SerializeField] public float cycleResetTime;
 
     public float enemyRetreatPoint;
 
@@ -66,8 +67,10 @@ public class EnemyStateMachine : MonoBehaviour
                 continue;
             }
 
-            if (enemies[pickedEnemyIndex] != null)
+            if (enemies[pickedEnemyIndex] != null) //&& enemies[pickedEnemyIndex].transform.position.y <= attackRange
             {
+
+
                 EnemyScript pickedEnemy = enemies[pickedEnemyIndex].GetComponent<EnemyScript>();
 
                 if (pickedEnemy == null)
@@ -116,7 +119,7 @@ public class EnemyStateMachine : MonoBehaviour
 
                 Debug.Log("Enemy Count: " + enemies.Count);
 
-                yield return new WaitForSeconds(0.5f);
+                yield return new WaitForSeconds(cycleResetTime);
             }
         }
 
