@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 public class LevelComplete : MonoBehaviour
 {
     public string overworldSceneName = "MainMenu"; // Name of the overworld scene
+    public GameObject cards;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -13,7 +14,18 @@ public class LevelComplete : MonoBehaviour
         {
             if (AreAllEnemiesDefeated())
             {
-                SceneManager.LoadScene(overworldSceneName); // Load the overworld scene
+                //cards = GameObject.FindGameObjectWithTag("CardSelection");
+                if (cards == null)
+                {
+                    SceneManager.LoadScene(overworldSceneName); // Load the overworld scene
+                }
+
+                else
+                {
+                    cards.SetActive(true);
+                }
+
+
             }
 
             else

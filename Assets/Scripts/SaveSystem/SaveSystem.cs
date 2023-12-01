@@ -40,15 +40,16 @@ public class SaveSystem : MonoBehaviour // Add static class for JSON
             PlayerPrefs.SetString("level6", "false");
 
             // Abilities
-            PlayerPrefs.SetString("human1", "false");
-            PlayerPrefs.SetString("human2", "false");
-            PlayerPrefs.SetString("ai1", "false");
-            PlayerPrefs.SetString("ai2", "false");
-            PlayerPrefs.SetString("ai3", "false");
-            PlayerPrefs.SetString("ai4", "false");
-            PlayerPrefs.SetString("nano1", "false");
-            PlayerPrefs.SetString("nano2", "false");
-            PlayerPrefs.SetString("nano3", "false");
+            PlayerPrefs.SetString("blackout", "false");
+            PlayerPrefs.SetString("damageboost", "false");
+            PlayerPrefs.SetString("stun", "false");
+            PlayerPrefs.SetString("nanobytes", "false");
+            PlayerPrefs.SetString("hologramdecoy", "false");
+            PlayerPrefs.SetString("saveextendedenemystun", "false");
+            PlayerPrefs.SetString("tenacity", "false");
+            PlayerPrefs.SetString("knockback", "false");
+            PlayerPrefs.SetString("flurryofpunches", "false");
+            PlayerPrefs.SetString("dash", "false");
 
             // Load game button will be enabled
             PlayerPrefs.SetString("load", "true");

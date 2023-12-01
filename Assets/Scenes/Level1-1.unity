@@ -512,20 +512,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbbaf908e13454ee1a7a97065329acbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  human1: 0
-  human2: 0
-  ai1: 0
-  ai2: 0
-  ai3: 0
-  ai4: 0
-  nano1: 0
-  nano2: 0
-  nano3: 0
+  player: {fileID: 74745469}
   saveSystem: {fileID: 0}
   zoomedFOV: 0.5
   zoomSpeed: 1
-  cam: {fileID: 0}
-  soundManager: {fileID: 0}
+  cam: {fileID: 934304543}
+  soundManager: {fileID: 771744958}
 --- !u!1 &93979097
 GameObject:
   m_ObjectHideFlags: 0
@@ -1520,6 +1512,7 @@ MonoBehaviour:
   attackPoint: {fileID: 815395095}
   dmg: 10
   alertIcon: {fileID: 216410605}
+  playerTransform: {fileID: 0}
 --- !u!70 &312219184
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -1820,6 +1813,7 @@ MonoBehaviour:
   attackPoint: {fileID: 584064761}
   dmg: 10
   alertIcon: {fileID: 990968444}
+  playerTransform: {fileID: 0}
 --- !u!70 &438506183
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -2452,6 +2446,7 @@ MonoBehaviour:
   attackPoint: {fileID: 1210309764}
   dmg: 10
   alertIcon: {fileID: 1634183095}
+  playerTransform: {fileID: 0}
 --- !u!70 &793909464
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -3261,6 +3256,7 @@ MonoBehaviour:
   attackPoint: {fileID: 1836395549}
   dmg: 10
   alertIcon: {fileID: 537816535}
+  playerTransform: {fileID: 0}
 --- !u!70 &978683880
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -3875,6 +3871,7 @@ MonoBehaviour:
   enemies: []
   pickedEnemyIndex: 0
   attackRange: 1.2
+  cycleResetTime: 0
   enemyRetreatPoint: 0
 --- !u!4 &1233910546
 Transform:
@@ -4458,6 +4455,7 @@ MonoBehaviour:
   attackPoint: {fileID: 759126273}
   dmg: 10
   alertIcon: {fileID: 279688120}
+  playerTransform: {fileID: 0}
 --- !u!70 &1381041405
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -4621,6 +4619,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   overworldSceneName: Level1-2
+  cards: {fileID: 0}
 --- !u!4 &1387859915
 Transform:
   m_ObjectHideFlags: 0
@@ -6051,6 +6050,7 @@ MonoBehaviour:
   attackPoint: {fileID: 868916104}
   dmg: 10
   alertIcon: {fileID: 1626940053}
+  playerTransform: {fileID: 0}
 --- !u!70 &1998277677
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

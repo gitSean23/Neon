@@ -4,16 +4,6 @@ using UnityEngine;
 
 public class Abilities : MonoBehaviour
 {
-    [SerializeField] public bool human1;
-    [SerializeField] public bool human2;
-    [SerializeField] public bool ai1;
-    [SerializeField] public bool ai2;
-    [SerializeField] public bool ai3;
-    [SerializeField] public bool ai4;
-    [SerializeField] public bool nano1;
-    [SerializeField] public bool nano2;
-    [SerializeField] public bool nano3;
-
     private Animator anim;
 
     public SaveSystem saveSystem;
@@ -39,49 +29,9 @@ public class Abilities : MonoBehaviour
         originalPosition = cam.transform.position;
 
 
-        if (PlayerPrefs.GetString("human1") == "true")
+        if (PlayerPrefs.GetString("damageboost") == "true")
         {
-            human1 = true;
-        }
-
-        if (PlayerPrefs.GetString("human2") == "true")
-        {
-            human2 = true;
-        }
-
-        if (PlayerPrefs.GetString("ai1") == "true")
-        {
-            ai1 = true;
-        }
-
-        if (PlayerPrefs.GetString("ai2") == "true")
-        {
-            ai2 = true;
-        }
-
-        if (PlayerPrefs.GetString("ai3") == "true")
-        {
-            ai3 = true;
-        }
-
-        if (PlayerPrefs.GetString("ai4") == "true")
-        {
-            ai4 = true;
-        }
-
-        if (PlayerPrefs.GetString("nano1") == "true")
-        {
-            nano1 = true;
-        }
-
-        if (PlayerPrefs.GetString("nano2") == "true")
-        {
-            nano2 = true;
-        }
-
-        if (PlayerPrefs.GetString("nano3") == "true")
-        {
-            nano3 = true;
+            GetComponent<FreeFlowCombatScript>().dmg = 20f;
         }
 
     }
@@ -94,9 +44,19 @@ public class Abilities : MonoBehaviour
             Debug.Log("NANO 1 ACTIVATED!");
         }
 
+        if (Input.GetKeyDown(KeyCode.Alpha2) && PlayerPrefs.GetString("damageboost") == "false")
+        {
+            Debug.Log("YOU HAVEN'T UNLOCKED damage boost YET!");
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha2) && PlayerPrefs.GetString("damageboost") == "true")
+        {
+            Debug.Log("damage boost activated!");
+        }
+
         if (Input.GetKeyDown(KeyCode.V) && PlayerPrefs.GetString("nano1") == "false")
         {
-            Debug.Log("YOU HAVEN'T UNLOCKED NANO 1 YET!");
+            Debug.Log("NANO 1 ACTIVATED!");
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
