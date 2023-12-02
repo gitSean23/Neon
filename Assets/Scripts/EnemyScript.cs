@@ -274,7 +274,31 @@ public class EnemyScript : MonoBehaviour
 
     public void PlayerStun()
     {
-        stunCoroutine = StartCoroutine(StunCoroutine());
+        Collider2D[] thePlayer = Physics2D.OverlapCircleAll(attackPoint.transform.position, radius, player);
+
+        if (thePlayer.Length < 1)
+        {
+            soundManager.playSfx(soundManager.lightWhoosh);
+            Debug.Log("No player to hit in range..");
+        }
+
+        else
+        {
+            foreach (Collider2D playerGameobject in thePlayer)
+            {
+                if (playerGameobject != null)
+                {
+                    soundManager.playSfx(soundManager.lightPunch);
+                    Debug.Log("PLAYER HIT!");
+                    // MODIFY THE LINE BELOW!
+                    stunCoroutine = StartCoroutine(StunCoroutine());
+                    // playerGameobject.GetComponent<PlayerScript>().health -= dmg;
+                    // playerHealthBar.fillAmount = playerGameobject.GetComponent<PlayerScript>().health / 100f;
+
+                }
+            }
+        }
+
     }
 
     IEnumerator StunCoroutine()

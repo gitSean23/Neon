@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerScript : MonoBehaviour
 {
@@ -20,6 +21,10 @@ public class PlayerScript : MonoBehaviour
     public Animator animator;
 
     EnemyDetect enemyDetect;
+
+    public float healAmount = 15f;
+
+    public Image playerHealthBar;
 
 
     // Start is called before the first frame update
@@ -42,6 +47,13 @@ public class PlayerScript : MonoBehaviour
         {
             Debug.Log("YOU DIED!");
             animator.SetBool("isDead", true);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Q) && health < 100f)
+        {
+            health += healAmount;
+            health = Mathf.Min(health, 100f);
+            playerHealthBar.fillAmount = health / 100f;
         }
     }
 

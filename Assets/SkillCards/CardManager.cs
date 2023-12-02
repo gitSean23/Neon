@@ -54,6 +54,7 @@ public class CardManager : MonoBehaviour
         PlayerPrefs.SetString("nanobytes", "true");
         PlayerPrefs.Save();
         cards.SetActive(false);
+        SceneManager.LoadScene(level1Cutscene);
     }
 
 
@@ -63,6 +64,7 @@ public class CardManager : MonoBehaviour
         PlayerPrefs.SetString("hologramdecoy", "true");
         PlayerPrefs.Save();
         cards.SetActive(false);
+        SceneManager.LoadScene(level1Cutscene);
     }
 
 
@@ -72,6 +74,7 @@ public class CardManager : MonoBehaviour
         PlayerPrefs.SetString("saveextendedenemystun", "true");
         PlayerPrefs.Save();
         cards.SetActive(false);
+        SceneManager.LoadScene(level1Cutscene);
     }
 
 
@@ -81,6 +84,7 @@ public class CardManager : MonoBehaviour
         PlayerPrefs.SetString("tenacity", "true");
         PlayerPrefs.Save();
         cards.SetActive(false);
+        SceneManager.LoadScene(level1Cutscene);
 
     }
 
@@ -91,6 +95,7 @@ public class CardManager : MonoBehaviour
         PlayerPrefs.SetString("knockback", "true");
         PlayerPrefs.Save();
         cards.SetActive(false);
+        SceneManager.LoadScene(level1Cutscene);
     }
 
     public void SaveFlurryofPunches()
@@ -99,6 +104,7 @@ public class CardManager : MonoBehaviour
         PlayerPrefs.SetString("flurryofpunches", "true");
         PlayerPrefs.Save();
         cards.SetActive(false);
+        SceneManager.LoadScene(level1Cutscene);
     }
 
     public void SaveDash()
@@ -107,6 +113,7 @@ public class CardManager : MonoBehaviour
         PlayerPrefs.SetString("dash", "true");
         PlayerPrefs.Save();
         cards.SetActive(false);
+        SceneManager.LoadScene(level1Cutscene);
     }
 
 }
