@@ -894,7 +894,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1.719984, y: -771.94}
+  m_AnchoredPosition: {x: 1.7199707, y: -771.94}
   m_SizeDelta: {x: 4.2319, y: 0.4837}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &214437070
@@ -23908,7 +23908,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1.719984, y: -771.94}
+  m_AnchoredPosition: {x: 1.7199707, y: -771.94}
   m_SizeDelta: {x: 4.2319, y: 0.4837}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1594462463
@@ -34582,7 +34582,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a8acd9cc42dd1d40842d2c5908589f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cam: {fileID: 0}
+  cam: {fileID: 934304541}
   parallaxEffect: 1
   autoScrollSpeed: 0
 --- !u!212 &2060191380
