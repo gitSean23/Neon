@@ -545,9 +545,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6b173425b4bc452780f82e0ee9200e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 8
   health: 0
   rb: {fileID: 74745475}
   animator: {fileID: 74745481}
+  healAmount: 15
+  playerHealthBar: {fileID: 0}
 --- !u!114 &74745478
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -768,7 +771,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbbaf908e13454ee1a7a97065329acbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 74745469}
   saveSystem: {fileID: 0}
   zoomedFOV: 0.5
   zoomSpeed: 0.1
@@ -1007,7 +1009,7 @@ GameObject:
   - component: {fileID: 163302952}
   - component: {fileID: 163302951}
   m_Layer: 6
-  m_Name: EnemyManager (1)
+  m_Name: EnemyManager1
   m_TagString: EnemyManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
