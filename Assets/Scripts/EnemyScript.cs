@@ -51,6 +51,7 @@ public class EnemyScript : MonoBehaviour
     SoundScript soundManager;
 
     Coroutine playerHitCoroutine;
+    Coroutine stunCoroutine;
 
     // Enemy Alert variables
     public GameObject alertIcon; // Reference to the alert icon GameObject
@@ -269,6 +270,18 @@ public class EnemyScript : MonoBehaviour
         Vector2 position;
         position = target.position;
         return Vector2.MoveTowards(position, transform.position, .95f);
+    }
+
+    public void PlayerStun()
+    {
+        stunCoroutine = StartCoroutine(StunCoroutine());
+    }
+
+    IEnumerator StunCoroutine()
+    {
+        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>().speed = 0f;
+        yield return new WaitForSeconds(5f);
+        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>().speed = 8f;
     }
 
 }
