@@ -171,6 +171,66 @@ public class FreeFlowCombatScript : MonoBehaviour
         }
     }
 
+    public void attackCollideBoss1()
+    {
+
+        Collider2D[] enemy = Physics2D.OverlapCircleAll(attackPoint.transform.position, radius, enemies);
+
+        if (enemy.Length < 1)
+        {
+            soundManager.playSfx(soundManager.lightWhoosh);
+            Debug.Log("No enemies to hit in range..");
+        }
+
+        else
+        {
+            foreach (Collider2D enemyGameobject in enemy)
+            {
+                if (enemyGameobject != null)
+                {
+                    soundManager.playSfx(soundManager.lightPunch);
+                    Debug.Log("BOSS HIT!");
+                    enemyHitCoroutine = StartCoroutine(EnemyGotHit(enemyGameobject));
+                    //enemyGameobject.GetComponent<Animator>().SetBool("EnemyHit", true);
+                    enemyGameobject.GetComponent<FB1Script>().health -= dmg;
+                    enemyGameobject.GetComponent<Animator>().SetFloat("Health", enemyGameobject.GetComponent<FB1Script>().health);
+                    //StopCoroutine(enemyHitCoroutine);
+                    //enemyGameobject.GetComponent<Animator>().SetBool("EnemyHit", false);
+                }
+            }
+        }
+    }
+
+    public void attackCollideBoss2()
+    {
+
+        Collider2D[] enemy = Physics2D.OverlapCircleAll(attackPoint.transform.position, radius, enemies);
+
+        if (enemy.Length < 1)
+        {
+            soundManager.playSfx(soundManager.lightWhoosh);
+            Debug.Log("No enemies to hit in range..");
+        }
+
+        else
+        {
+            foreach (Collider2D enemyGameobject in enemy)
+            {
+                if (enemyGameobject != null)
+                {
+                    soundManager.playSfx(soundManager.lightPunch);
+                    Debug.Log("BOSS 2 HIT!");
+                    enemyHitCoroutine = StartCoroutine(EnemyGotHit(enemyGameobject));
+                    //enemyGameobject.GetComponent<Animator>().SetBool("EnemyHit", true);
+                    enemyGameobject.GetComponent<FB2Script>().health -= dmg;
+                    enemyGameobject.GetComponent<Animator>().SetFloat("Health", enemyGameobject.GetComponent<FB2Script>().health);
+                    //StopCoroutine(enemyHitCoroutine);
+                    //enemyGameobject.GetComponent<Animator>().SetBool("EnemyHit", false);
+                }
+            }
+        }
+    }
+
     public void attackCollideFinisher()
     {
 

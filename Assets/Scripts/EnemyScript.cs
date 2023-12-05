@@ -203,7 +203,8 @@ public class EnemyScript : MonoBehaviour
                     soundManager.playSfx(soundManager.lightPunch);
                     Debug.Log("PLAYER HIT!");
                     // MODIFY THE LINE BELOW!
-                    playerHitCoroutine = StartCoroutine(PlayerGotHit(playerGameobject));
+                    //playerHitCoroutine = StartCoroutine(PlayerGotHit(playerGameobject));
+                    playerGameobject.GetComponent<PlayerScript>().PlayerGotHit();
                     playerGameobject.GetComponent<PlayerScript>().health -= dmg;
                     playerHealthBar.fillAmount = playerGameobject.GetComponent<PlayerScript>().health / 100f;
 
@@ -261,7 +262,15 @@ public class EnemyScript : MonoBehaviour
 
     public void Pull()
     {
-        playerTransform.DOMove(TargetOffset(transform), .65f);
+        if (playerTransform == null)
+        {
+            return;
+        }
+
+        else
+        {
+            playerTransform.DOMove(TargetOffset(transform), .65f);
+        }
     }
 
     // For gravity pull
@@ -272,6 +281,7 @@ public class EnemyScript : MonoBehaviour
         return Vector2.MoveTowards(position, transform.position, .95f);
     }
 
+    // For quantum brute
     public void PlayerStun()
     {
         Collider2D[] thePlayer = Physics2D.OverlapCircleAll(attackPoint.transform.position, radius, player);
@@ -290,22 +300,13 @@ public class EnemyScript : MonoBehaviour
                 {
                     soundManager.playSfx(soundManager.lightPunch);
                     Debug.Log("PLAYER HIT!");
-                    // MODIFY THE LINE BELOW!
-                    stunCoroutine = StartCoroutine(StunCoroutine());
-                    // playerGameobject.GetComponent<PlayerScript>().health -= dmg;
-                    // playerHealthBar.fillAmount = playerGameobject.GetComponent<PlayerScript>().health / 100f;
+
+                    playerGameobject.GetComponent<PlayerScript>().Stunned();
 
                 }
             }
         }
 
-    }
-
-    IEnumerator StunCoroutine()
-    {
-        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>().speed = 0f;
-        yield return new WaitForSeconds(5f);
-        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>().speed = 8f;
     }
 
 }

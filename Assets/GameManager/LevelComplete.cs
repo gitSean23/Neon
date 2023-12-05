@@ -6,6 +6,8 @@ public class LevelComplete : MonoBehaviour
     public string overworldSceneName = "MainMenu"; // Name of the overworld scene
     public GameObject cards;
 
+    public int currentLevel;
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         Debug.Log("Collider Trigger is nominal :)");
@@ -25,6 +27,7 @@ public class LevelComplete : MonoBehaviour
                     cards.SetActive(true);
                 }
 
+                PlayerPrefs.SetInt("CurrentLevel", currentLevel);
 
             }
 
@@ -37,7 +40,7 @@ public class LevelComplete : MonoBehaviour
 
     private bool AreAllEnemiesDefeated()
     {
-        GameObject[] enemyManagers = GameObject.FindGameObjectsWithTag("EnemyManager"); // Find all objects tagged with EnemyManager
+        GameObject[] enemyManagers = GameObject.FindGameObjectsWithTag("EnemyManager"); // Find all objects tagged with EnemyManage
 
         foreach (var managerObj in enemyManagers)
         {
@@ -47,6 +50,7 @@ public class LevelComplete : MonoBehaviour
                 Debug.Log("Not all enemies defeated yet!");
                 return false; // If any enemy manager still has enemies left, return false
             }
+
         }
 
         Debug.Log("Sending player to MAIN MENU!");

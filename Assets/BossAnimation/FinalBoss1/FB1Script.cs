@@ -10,6 +10,8 @@ public class FB1Script : MonoBehaviour
     float playerPositionX;
     public Transform target;
 
+    [SerializeField] public float health = 150f;
+
     public Animator anim;
     [SerializeField] public float attackRange;
     //public GameObject alertIcon;
@@ -28,64 +30,84 @@ public class FB1Script : MonoBehaviour
     public LayerMask player;
     Coroutine playerHitCoroutine;
 
+    bool isChasing = false;
+
     public GameObject attackPoint;
+
     // Start is called before the first frame update
     void Start()
     {
+
         soundManager = GameObject.FindGameObjectWithTag("Sound").GetComponent<SoundScript>();
         anim = GetComponent<Animator>();
+        bossCycle = StartCoroutine(BossCycle());
     }
 
     // Update is called once per frame
     void Update()
     {
-        bossCycle = StartCoroutine(BossCycle());
+
+        if (health <= 0)
+        {
+            Debug.Log("FB1 DEAD!");
+            //isDead = true;
+
+            Destroy(gameObject);
+        }
     }
 
     IEnumerator BossCycle()
     {
-        enemyRetreatPoint = transform.position.x;
+        while (health > 0)
+        {
+            enemyRetreatPoint = transform.position.x;
 
 
-        anim.SetBool("isIdle", false);
-        anim.SetBool("isChasing", true);
-        //alertIcon.SetActive(true);
-        Chase();
+            anim.SetBool("isIdle", false);
+            anim.SetBool("isChasing", true);
+            isChasing = true;
+            //alertIcon.SetActive(true);
+            Chase();
 
 
-        yield return new WaitUntil(() => Mathf.Abs(transform.position.x - GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>().position.x) <= attackRange);
+            yield return new WaitUntil(() => Mathf.Abs(transform.position.x - GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>().position.x) <= attackRange);
 
 
-        //alertIcon.SetActive(false);
-        anim.SetBool("isChasing", false);
-        anim.SetBool("isAttacking", true);
+            //alertIcon.SetActive(false);
+            isChasing = false;
+            anim.SetBool("isChasing", false);
+            anim.SetBool("isAttacking", true);
 
-        yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(1.5f);
 
-        anim.SetBool("isAttacking", false);
-        anim.SetBool("isRetreating", true);
-        transform.position = Vector2.MoveTowards(transform.position, new Vector3(enemyRetreatPoint, transform.position.y, transform.position.z), speed * Time.deltaTime);
-
-
-
-        yield return new WaitUntil(() => Mathf.Abs(transform.position.x) >= Mathf.Abs(enemyRetreatPoint));
+            anim.SetBool("isAttacking", false);
+            anim.SetBool("isRetreating", true);
+            transform.position = Vector2.MoveTowards(transform.position, new Vector3(enemyRetreatPoint, transform.position.y, transform.position.z), speed * Time.deltaTime);
 
 
-        anim.SetBool("isRetreating", false);
-        anim.SetBool("isIdle", true);
+
+            yield return new WaitUntil(() => Mathf.Abs(transform.position.x) >= Mathf.Abs(enemyRetreatPoint));
 
 
-        yield return new WaitForSeconds(5f);
+            anim.SetBool("isRetreating", false);
+            anim.SetBool("isIdle", true);
+
+
+            yield return new WaitForSeconds(7f);
+        }
     }
 
     public void Chase()
     {
-        playerPositionX = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>().position.x;
-        float directionToPlayer = Mathf.Abs(playerPositionX - transform.position.x);
-        Flip(playerPositionX);
-        Vector2 targetPosition = new Vector2(target.position.x + Mathf.Sign(transform.position.x - target.position.x) * xOffset, transform.position.y);
+        if (isChasing)
+        {
+            playerPositionX = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>().position.x;
+            float directionToPlayer = Mathf.Abs(playerPositionX - transform.position.x);
+            Flip(playerPositionX);
+            Vector2 targetPosition = new Vector2(target.position.x + Mathf.Sign(transform.position.x - target.position.x) * xOffset, transform.position.y);
 
-        transform.position = Vector2.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
+        }
     }
 
     void Flip(float directionToPlayer)
@@ -126,7 +148,8 @@ public class FB1Script : MonoBehaviour
                     soundManager.playSfx(soundManager.lightPunch);
                     Debug.Log("PLAYER HIT!");
                     // MODIFY THE LINE BELOW!
-                    playerHitCoroutine = StartCoroutine(PlayerGotHit(playerGameobject));
+                    // playerHitCoroutine = StartCoroutine(PlayerGotHit(playerGameobject));
+                    playerGameobject.GetComponent<PlayerScript>().PlayerGotHit();
                     playerGameobject.GetComponent<PlayerScript>().health -= dmg;
                     playerHealthBar.fillAmount = playerGameobject.GetComponent<PlayerScript>().health / 100f;
 
@@ -135,16 +158,16 @@ public class FB1Script : MonoBehaviour
         }
     }
 
-    IEnumerator PlayerGotHit(Collider2D playerGameobject)
-    {
-        if (GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>().health > 0)
-        {
-            playerGameobject.GetComponent<Animator>().SetBool("isHurt", true);
-            yield return new WaitForSeconds(0.1f);
-            playerGameobject.GetComponent<Animator>().SetBool("isHurt", false);
-        }
+    // IEnumerator PlayerGotHit(Collider2D playerGameobject)
+    // {
+    //     if (GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>().health > 0)
+    //     {
+    //         playerGameobject.GetComponent<Animator>().SetBool("isHurt", true);
+    //         yield return new WaitForSeconds(0.1f);
+    //         playerGameobject.GetComponent<Animator>().SetBool("isHurt", false);
+    //     }
 
-    }
+    // }
 
 
 }

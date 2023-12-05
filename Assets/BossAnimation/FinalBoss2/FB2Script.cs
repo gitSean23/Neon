@@ -15,10 +15,12 @@ public class FB2Script : MonoBehaviour
     public GameObject alertIcon;
     Coroutine bossCycle;
 
+    [SerializeField] public float health = 150f;
+
     float speed = 4f;
     float xOffset = 0.9f;
 
-    float dmg = 20f;
+    float dmg = 30f;
 
     SoundScript soundManager;
 
@@ -27,66 +29,86 @@ public class FB2Script : MonoBehaviour
     public Image playerHealthBar;
     public LayerMask player;
     Coroutine playerHitCoroutine;
+    bool isChasing = false;
 
     public GameObject attackPoint;
+
+    Collider2D collider;
     // Start is called before the first frame update
     void Start()
     {
+        collider = GetComponent<Collider2D>();
         soundManager = GameObject.FindGameObjectWithTag("Sound").GetComponent<SoundScript>();
         anim = GetComponent<Animator>();
+        bossCycle = StartCoroutine(BossCycle());
     }
 
     // Update is called once per frame
     void Update()
     {
-        bossCycle = StartCoroutine(BossCycle());
+        if (health <= 0)
+        {
+            Debug.Log("FB1 DEAD!");
+            //isDead = true;
+
+            Destroy(gameObject);
+        }
     }
 
     IEnumerator BossCycle()
     {
-        enemyRetreatPoint = transform.position.x;
+        while (health > 0)
+        {
+            enemyRetreatPoint = transform.position.x;
 
 
-        anim.SetBool("isIdle", false);
-        anim.SetBool("isChasing", true);
-        alertIcon.SetActive(true);
-        Chase();
+            anim.SetBool("isIdle", false);
+            anim.SetBool("isChasing", true);
+            //alertIcon.SetActive(true);
+            isChasing = true;
+            Chase();
 
 
-        yield return new WaitUntil(() => Mathf.Abs(transform.position.x - GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>().position.x) <= attackRange);
-
-
-
-        anim.SetBool("isChasing", false);
-        alertIcon.SetActive(false);
-        anim.SetBool("isAttacking", true);
-
-        yield return new WaitForSeconds(1f);
-
-        anim.SetBool("isAttacking", false);
-        anim.SetBool("isRetreating", true);
-        transform.position = Vector2.MoveTowards(transform.position, new Vector3(enemyRetreatPoint, transform.position.y, transform.position.z), speed * Time.deltaTime);
+            yield return new WaitUntil(() => Mathf.Abs(transform.position.x - GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>().position.x) <= attackRange);
 
 
 
-        yield return new WaitUntil(() => Mathf.Abs(transform.position.x) >= Mathf.Abs(enemyRetreatPoint));
+            anim.SetBool("isChasing", false);
+            //alertIcon.SetActive(false);
+            anim.SetBool("isAttacking", true);
 
 
-        anim.SetBool("isRetreating", false);
-        anim.SetBool("isIdle", true);
+            yield return new WaitForSeconds(1f);
 
 
-        yield return new WaitForSeconds(2f);
+            anim.SetBool("isAttacking", false);
+            anim.SetBool("isRetreating", true);
+            transform.position = Vector2.MoveTowards(transform.position, new Vector3(enemyRetreatPoint, transform.position.y, transform.position.z), speed * Time.deltaTime);
+
+
+
+            yield return new WaitUntil(() => Mathf.Abs(transform.position.x) >= Mathf.Abs(enemyRetreatPoint));
+
+
+            anim.SetBool("isRetreating", false);
+            anim.SetBool("isIdle", true);
+
+
+            yield return new WaitForSeconds(2f);
+        }
     }
 
     public void Chase()
     {
-        playerPositionX = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>().position.x;
-        float directionToPlayer = Mathf.Abs(playerPositionX - transform.position.x);
-        Flip(playerPositionX);
-        Vector2 targetPosition = new Vector2(target.position.x + Mathf.Sign(transform.position.x - target.position.x) * xOffset, transform.position.y);
+        if (isChasing)
+        {
+            playerPositionX = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>().position.x;
+            float directionToPlayer = Mathf.Abs(playerPositionX - transform.position.x);
+            Flip(playerPositionX);
+            Vector2 targetPosition = new Vector2(target.position.x + Mathf.Sign(transform.position.x - target.position.x) * xOffset, transform.position.y);
 
-        transform.position = Vector2.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
+        }
     }
 
     void Flip(float directionToPlayer)

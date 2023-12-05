@@ -31,13 +31,8 @@ public class SaveSystem : MonoBehaviour // Add static class for JSON
 
         if (data == "new")
         {
-            // Levels
-            PlayerPrefs.SetString("level1", "false");
-            PlayerPrefs.SetString("level2", "false");
-            PlayerPrefs.SetString("level3", "false");
-            PlayerPrefs.SetString("level4", "false");
-            PlayerPrefs.SetString("level5", "false");
-            PlayerPrefs.SetString("level6", "false");
+            // Current Level
+            PlayerPrefs.SetInt("CurrentLevel", 1);
 
             // Abilities
             PlayerPrefs.SetString("blackout", "false");
@@ -63,12 +58,7 @@ public class SaveSystem : MonoBehaviour // Add static class for JSON
     public void LoadData()
     {
         // Gathers all the levels
-        PlayerPrefs.GetString("level1");
-        PlayerPrefs.GetString("level2");
-        PlayerPrefs.GetString("level3");
-        PlayerPrefs.GetString("level4");
-        PlayerPrefs.GetString("level5");
-        PlayerPrefs.GetString("level6");
+        PlayerPrefs.GetInt("CurrentLevel");
 
         // Gathers all player abilities
         PlayerPrefs.GetString("human1");

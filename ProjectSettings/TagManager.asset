@@ -9,6 +9,7 @@ TagManager:
   - Teleporter
   - EnemyManager
   - CardSelection
+  - Boss
   layers:
   - Default
   - TransparentFX

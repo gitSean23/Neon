@@ -26,10 +26,17 @@ public class PlayerScript : MonoBehaviour
 
     public Image playerHealthBar;
 
+    Coroutine stunCoroutine;
+    Coroutine healCoroutine;
+    Coroutine hitCoroutine;
+
+    bool canHeal;
+
 
     // Start is called before the first frame update
     void Start()
     {
+        canHeal = true;
         health = 100f;
         enemyDetect = GetComponent<EnemyDetect>();
         animator.SetBool("isDead", false);
@@ -49,11 +56,16 @@ public class PlayerScript : MonoBehaviour
             animator.SetBool("isDead", true);
         }
 
-        if (Input.GetKeyDown(KeyCode.Q) && health < 100f)
+        if (Input.GetKeyDown(KeyCode.R) && health < 100f)
         {
-            health += healAmount;
-            health = Mathf.Min(health, 100f);
-            playerHealthBar.fillAmount = health / 100f;
+            if (canHeal)
+            {
+                health += healAmount;
+                health = Mathf.Min(health, 100f);
+                playerHealthBar.fillAmount = health / 100f;
+                canHeal = false;
+                healCoroutine = StartCoroutine(HealCoroutine());
+            }
         }
     }
 
@@ -79,5 +91,39 @@ public class PlayerScript : MonoBehaviour
             localScale.x *= -1f;
             transform.localScale = localScale;
         }
+    }
+
+    public void Stunned()
+    {
+        stunCoroutine = StartCoroutine(StunCoroutine());
+    }
+
+    IEnumerator StunCoroutine()
+    {
+        speed = 0f;
+        yield return new WaitForSeconds(3f);
+        speed = 8f;
+    }
+
+    IEnumerator HealCoroutine()
+    {
+        yield return new WaitForSeconds(10f);
+        canHeal = true;
+    }
+
+    public void PlayerGotHit()
+    {
+        hitCoroutine = StartCoroutine(GotHit());
+    }
+
+    IEnumerator GotHit() // Collider2D playerGameobject
+    {
+        if (health > 0)
+        {
+            animator.SetBool("isHurt", true);
+            yield return new WaitForSeconds(0.1f);
+            animator.SetBool("isHurt", false);
+        }
+
     }
 }

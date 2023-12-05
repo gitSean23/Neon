@@ -20,9 +20,13 @@ public class Abilities : MonoBehaviour
 
     public SoundScript soundManager;
 
+    bool canFinisher;
+    Coroutine finisherCoroutine;
+
     // Start is called before the first frame update
     void Start()
     {
+        canFinisher = true;
         soundManager = GameObject.FindGameObjectWithTag("Sound").GetComponent<SoundScript>();
         anim = GetComponent<Animator>();
         originalFOV = cam.orthographicSize;
@@ -62,7 +66,6 @@ public class Abilities : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             Debug.Log("Ability 1 Activated!");
-            anim.SetBool("attack5", true);
             StartFinisher();
             //anim.SetBool("attack5", false);
         }
@@ -88,13 +91,19 @@ public class Abilities : MonoBehaviour
 
     public void StartFinisher()
     {
-        soundManager.playSfx(soundManager.finisherWhoosh);
-        // Smoothly interpolate the camera's position and FOV
-        cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, zoomedFOV, zoomSpeed);
-        cam.transform.position = Vector3.Lerp(cam.transform.position, new Vector3(transform.position.x, transform.position.y, originalPosition.z), zoomSpeed);
-        cam.orthographicSize = 4f;
-        Time.timeScale = 0.5f;
-        Time.fixedDeltaTime = 0.02f * Time.timeScale;
+        if (canFinisher)
+        {
+            anim.SetBool("attack5", true);
+            canFinisher = false;
+            soundManager.playSfx(soundManager.finisherWhoosh);
+            // Smoothly interpolate the camera's position and FOV
+            cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, zoomedFOV, zoomSpeed);
+            cam.transform.position = Vector3.Lerp(cam.transform.position, new Vector3(transform.position.x, transform.position.y, originalPosition.z), zoomSpeed);
+            cam.orthographicSize = 4f;
+            Time.timeScale = 0.5f;
+            Time.fixedDeltaTime = 0.02f * Time.timeScale;
+            finisherCoroutine = StartCoroutine(FinisherCoroutine());
+        }
     }
 
     public void PlayFinisherSound()
@@ -118,6 +127,12 @@ public class Abilities : MonoBehaviour
     public void EndHuman1()
     {
         anim.SetBool("attack5", false);
+    }
+
+    IEnumerator FinisherCoroutine()
+    {
+        yield return new WaitForSeconds(10f);
+        canFinisher = true;
     }
 
 

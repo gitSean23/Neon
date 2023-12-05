@@ -8,6 +8,8 @@ public class CardManager : MonoBehaviour
     public GameObject cards; //Array of card GameObjects
 
     private string level1Cutscene = "Level1-Cutscene";
+
+    private string level3Cutscene = "Level3-Cutscene";
     private string level4 = "Level4";
     private string level6 = "Level 6";
     SaveSystem playerManager;
@@ -25,6 +27,7 @@ public class CardManager : MonoBehaviour
         PlayerPrefs.SetString("blackout", "true");
         PlayerPrefs.Save();
         cards.SetActive(false);
+        SceneManager.LoadScene(level1Cutscene);
     }
 
     public void SaveDamageBoost()
@@ -54,7 +57,7 @@ public class CardManager : MonoBehaviour
         PlayerPrefs.SetString("nanobytes", "true");
         PlayerPrefs.Save();
         cards.SetActive(false);
-        SceneManager.LoadScene(level1Cutscene);
+        SceneManager.LoadScene(level3Cutscene);
     }
 
 
@@ -104,7 +107,7 @@ public class CardManager : MonoBehaviour
         PlayerPrefs.SetString("flurryofpunches", "true");
         PlayerPrefs.Save();
         cards.SetActive(false);
-        SceneManager.LoadScene(level1Cutscene);
+        SceneManager.LoadScene(level3Cutscene);
     }
 
     public void SaveDash()
