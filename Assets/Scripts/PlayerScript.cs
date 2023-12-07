@@ -32,6 +32,8 @@ public class PlayerScript : MonoBehaviour
 
     bool canHeal;
 
+    public GameObject pauseMenu;
+
 
     // Start is called before the first frame update
     void Start()
@@ -45,6 +47,13 @@ public class PlayerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Pause menu
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Time.timeScale = 0f;
+            pauseMenu.SetActive(true);
+        }
+        //
         horizontal = Input.GetAxisRaw("Horizontal");
         Flip();
         animator.SetFloat("Speed", Mathf.Abs(horizontal));

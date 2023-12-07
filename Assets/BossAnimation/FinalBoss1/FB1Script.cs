@@ -67,11 +67,15 @@ public class FB1Script : MonoBehaviour
             anim.SetBool("isChasing", true);
             isChasing = true;
             //alertIcon.SetActive(true);
-            Chase();
 
 
-            yield return new WaitUntil(() => Mathf.Abs(transform.position.x - GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>().position.x) <= attackRange);
 
+            //yield return new WaitUntil(() => Mathf.Abs(transform.position.x - GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>().position.x) <= attackRange);
+            while (isChasing && Mathf.Abs(transform.position.x - GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>().position.x) > attackRange)
+            {
+                Chase();
+                yield return null;  // Wait for the next frame
+            }
 
             //alertIcon.SetActive(false);
             isChasing = false;
@@ -85,8 +89,12 @@ public class FB1Script : MonoBehaviour
             transform.position = Vector2.MoveTowards(transform.position, new Vector3(enemyRetreatPoint, transform.position.y, transform.position.z), speed * Time.deltaTime);
 
 
-
-            yield return new WaitUntil(() => Mathf.Abs(transform.position.x) >= Mathf.Abs(enemyRetreatPoint));
+            while (Mathf.Abs(transform.position.x) < Mathf.Abs(enemyRetreatPoint))
+            {
+                transform.position = Vector2.MoveTowards(transform.position, new Vector3(enemyRetreatPoint, transform.position.y, transform.position.z), speed * Time.deltaTime);
+                yield return null;  // Wait for the next frame
+            }
+            //yield return new WaitUntil(() => Mathf.Abs(transform.position.x) >= Mathf.Abs(enemyRetreatPoint));
 
 
             anim.SetBool("isRetreating", false);
@@ -101,12 +109,16 @@ public class FB1Script : MonoBehaviour
     {
         if (isChasing)
         {
+            Debug.Log("Chasing Player");
             playerPositionX = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>().position.x;
             float directionToPlayer = Mathf.Abs(playerPositionX - transform.position.x);
             Flip(playerPositionX);
             Vector2 targetPosition = new Vector2(target.position.x + Mathf.Sign(transform.position.x - target.position.x) * xOffset, transform.position.y);
+            Debug.Log(targetPosition);
 
+            Debug.Log("moving my transform");
             transform.position = Vector2.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
+            Debug.Log("transform move uccessful");
         }
     }
 
@@ -135,7 +147,7 @@ public class FB1Script : MonoBehaviour
 
         if (thePlayer.Length < 1)
         {
-            soundManager.playSfx(soundManager.lightWhoosh);
+
             Debug.Log("No player to hit in range..");
         }
 
@@ -145,7 +157,7 @@ public class FB1Script : MonoBehaviour
             {
                 if (playerGameobject != null)
                 {
-                    soundManager.playSfx(soundManager.lightPunch);
+
                     Debug.Log("PLAYER HIT!");
                     // MODIFY THE LINE BELOW!
                     // playerHitCoroutine = StartCoroutine(PlayerGotHit(playerGameobject));

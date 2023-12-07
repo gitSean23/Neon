@@ -298,7 +298,7 @@ public class EnemyScript : MonoBehaviour
             {
                 if (playerGameobject != null)
                 {
-                    soundManager.playSfx(soundManager.lightPunch);
+                    // soundManager.playSfx(soundManager.quantumAttack);
                     Debug.Log("PLAYER HIT!");
 
                     playerGameobject.GetComponent<PlayerScript>().Stunned();
@@ -307,6 +307,32 @@ public class EnemyScript : MonoBehaviour
             }
         }
 
+    }
+
+    public void PlayerStunPrep()
+    {
+        Collider2D[] thePlayer = Physics2D.OverlapCircleAll(attackPoint.transform.position, radius, player);
+
+        if (thePlayer.Length < 1)
+        {
+            soundManager.playSfx(soundManager.lightWhoosh);
+            Debug.Log("No player to hit in range..");
+        }
+
+        else
+        {
+            foreach (Collider2D playerGameobject in thePlayer)
+            {
+                if (playerGameobject != null)
+                {
+                    soundManager.playSfx(soundManager.quantumAttack);
+                    //Debug.Log("PLAYER HIT!");
+
+                    //playerGameobject.GetComponent<PlayerScript>().Stunned();
+
+                }
+            }
+        }
     }
 
 }

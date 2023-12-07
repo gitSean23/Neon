@@ -10,6 +10,7 @@ TagManager:
   - EnemyManager
   - CardSelection
   - Boss
+  - PauseMenu
   layers:
   - Default
   - TransparentFX

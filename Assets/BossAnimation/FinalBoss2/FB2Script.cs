@@ -33,11 +33,11 @@ public class FB2Script : MonoBehaviour
 
     public GameObject attackPoint;
 
-    Collider2D collider;
+
     // Start is called before the first frame update
     void Start()
     {
-        collider = GetComponent<Collider2D>();
+
         soundManager = GameObject.FindGameObjectWithTag("Sound").GetComponent<SoundScript>();
         anim = GetComponent<Animator>();
         bossCycle = StartCoroutine(BossCycle());
@@ -66,13 +66,17 @@ public class FB2Script : MonoBehaviour
             anim.SetBool("isChasing", true);
             //alertIcon.SetActive(true);
             isChasing = true;
-            Chase();
+            //Chase();
 
 
-            yield return new WaitUntil(() => Mathf.Abs(transform.position.x - GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>().position.x) <= attackRange);
+            //yield return new WaitUntil(() => Mathf.Abs(transform.position.x - GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>().position.x) <= attackRange);
+            while (isChasing && Mathf.Abs(transform.position.x - GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>().position.x) > attackRange)
+            {
+                Chase();
+                yield return null;  // Wait for the next frame
+            }
 
-
-
+            isChasing = false;
             anim.SetBool("isChasing", false);
             //alertIcon.SetActive(false);
             anim.SetBool("isAttacking", true);
@@ -87,7 +91,12 @@ public class FB2Script : MonoBehaviour
 
 
 
-            yield return new WaitUntil(() => Mathf.Abs(transform.position.x) >= Mathf.Abs(enemyRetreatPoint));
+            //yield return new WaitUntil(() => Mathf.Abs(transform.position.x) >= Mathf.Abs(enemyRetreatPoint));
+            while (Mathf.Abs(transform.position.x) < Mathf.Abs(enemyRetreatPoint))
+            {
+                transform.position = Vector2.MoveTowards(transform.position, new Vector3(enemyRetreatPoint, transform.position.y, transform.position.z), speed * Time.deltaTime);
+                yield return null;  // Wait for the next frame
+            }
 
 
             anim.SetBool("isRetreating", false);

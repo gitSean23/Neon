@@ -6,6 +6,8 @@ public class BossComplete : MonoBehaviour
     public string overworldSceneName = "MainMenu"; // Name of the overworld scene
     public GameObject cards;
 
+    public int currentLevel;
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         Debug.Log("Collider Trigger is nominal :)");
@@ -25,6 +27,7 @@ public class BossComplete : MonoBehaviour
                     cards.SetActive(true);
                 }
 
+                PlayerPrefs.SetInt("CurrentLevel", currentLevel);
 
             }
 

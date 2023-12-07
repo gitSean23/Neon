@@ -17,6 +17,8 @@ public class SoundScript : MonoBehaviour
     [SerializeField] public AudioClip blackout;
     [SerializeField] public AudioClip lightsOn;
 
+    [SerializeField] public AudioClip quantumAttack;
+
     void Start()
     {
         musicSrc.clip = bgMusic;

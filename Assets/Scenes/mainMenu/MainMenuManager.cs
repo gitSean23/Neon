@@ -32,6 +32,17 @@ public class MainMenuManager : MonoBehaviour
             SceneManager.LoadSceneAsync("Level4-Cutscene");
         }
 
+        if (PlayerPrefs.GetInt("CurrentLevel") == 5)
+        {
+            SceneManager.LoadSceneAsync("Level6-Cutscene1");
+        }
+
+
+        if (PlayerPrefs.GetInt("CurrentLevel") == 6)
+        {
+            SceneManager.LoadSceneAsync("Level6-Cutscene2");
+        }
+
     }
 
     public void QuitGame()
