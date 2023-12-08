@@ -35,7 +35,8 @@ public class EnemyDetect : MonoBehaviour
     void Update()
     {
         // if (Input.GetKeyDown(KeyCode.E))
-        if (Input.GetMouseButton(0))
+        // if (Input.GetMouseButton(0))
+        if (Input.GetKeyDown(KeyCode.E))
         {
             GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
             float closestDistance = lockOnRange;
@@ -72,12 +73,6 @@ public class EnemyDetect : MonoBehaviour
 
     void MoveToTarget(GameObject target, float duration)
     {
-        //transform.DOLookAt(target.transform.position, .2f);
-        //nearestEnemyPositionX = target.GetComponent<Transform>().position.x;
-        //float directionToNearestEnemy = Mathf.Abs(nearestEnemyPositionX - transform.position.x);
-        //Flip(directionToNearestEnemy);
-        //transform.DOLookAt(target.transform.position, .2f);
-
         transform.DOMove(TargetOffset(target.transform), duration);
     }
 
