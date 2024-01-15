@@ -6,6 +6,11 @@ TagManager:
   tags:
   - Enemy
   - Sound
+  - Teleporter
+  - EnemyManager
+  - CardSelection
+  - Boss
+  - PauseMenu
   layers:
   - Default
   - TransparentFX
@@ -15,8 +20,8 @@ TagManager:
   - UI
   - Enemy
   - Background
-  - 
-  - 
+  - EnemySight
+  - Cutscene
   - 
   - 
   - 
@@ -45,4 +50,13 @@ TagManager:
     locked: 0
   - name: Bg
     uniqueID: 3373952815
+    locked: 0
+  - name: Player_Enemy
+    uniqueID: 763979763
+    locked: 0
+  - name: Foreground
+    uniqueID: 2843504043
+    locked: 0
+  - name: Cutscene
+    uniqueID: 94145297
     locked: 0

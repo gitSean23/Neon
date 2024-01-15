@@ -13,14 +13,32 @@ public class EnemyDetect : MonoBehaviour
     [SerializeField] private GameObject currTarget;
     [SerializeField] public float lockOnRange = 10f;
 
+    float nearestEnemyPositionX;
+
+    private bool isFacingRight = true;
+
+    PlayerScript playerScript;
+
+    public GameObject closestEnemy;
+
+    void Start()
+    {
+        GameObject closestEnemy = null;
+        playerScript = GetComponent<PlayerScript>();
+        if (playerScript == null)
+        {
+            Debug.LogError("PlayerScript not found on the GameObject");
+        }
+    }
 
     // Update is called once per frame
     void Update()
     {
+        // if (Input.GetKeyDown(KeyCode.E))
+        // if (Input.GetMouseButton(0))
         if (Input.GetKeyDown(KeyCode.E))
         {
             GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-            GameObject closestEnemy = null;
             float closestDistance = lockOnRange;
 
             foreach (GameObject enemy in enemies)
@@ -38,6 +56,8 @@ public class EnemyDetect : MonoBehaviour
             {
                 currTarget = closestEnemy;
                 Debug.Log("Locked onto " + currTarget.name);
+                //playerScript.Flip();
+                //Flip(closestEnemy.transform.position.x);
                 MoveToTarget(currTarget, .65f);
 
             }
@@ -53,9 +73,9 @@ public class EnemyDetect : MonoBehaviour
 
     void MoveToTarget(GameObject target, float duration)
     {
-        //transform.DOLookAt(target.transform.position, .2f);
         transform.DOMove(TargetOffset(target.transform), duration);
     }
+
 
     public Vector2 TargetOffset(Transform target)
     {
