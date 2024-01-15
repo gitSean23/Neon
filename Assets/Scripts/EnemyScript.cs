@@ -145,34 +145,34 @@ public class EnemyScript : MonoBehaviour
             return;
         }
 
-        if (!isRetreating)
+        if (isRetreating == false)
         {
             SetLayerCollision("Enemy", "Enemy", false);
 
             anim.SetBool("isRetreating", false);
         }
 
-        else
+        if (isIdle)
         {
             // enemy is idle
 
-            playerPositionX = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>().position.x;
-            float directionToPlayer = Mathf.Abs(playerPositionX - transform.position.x);
-            Flip(playerPositionX);
+            // playerPositionX = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>().position.x;
+            // float directionToPlayer = Mathf.Abs(playerPositionX - transform.position.x);
+            // Flip(playerPositionX);
 
-            if (Vector2.Distance(transform.position, target.position) > minDistance)
-            {
+            // if (Vector2.Distance(transform.position, target.position) > minDistance)
+            // {
 
-                transform.position = Vector2.MoveTowards(transform.position, new Vector3(target.position.x, transform.position.y, transform.position.z), speed * Time.deltaTime);
+            //     transform.position = Vector2.MoveTowards(transform.position, new Vector3(target.position.x, transform.position.y, transform.position.z), speed * Time.deltaTime);
 
-                anim.SetFloat("Speed", speed);
+            //     anim.SetFloat("Speed", speed);
 
-            }
+            // }
 
-            else
-            {
-                anim.SetFloat("Speed", 0);
-            }
+            // else
+            // {
+            anim.SetFloat("Speed", 0);
+            //}
         }
     }
 

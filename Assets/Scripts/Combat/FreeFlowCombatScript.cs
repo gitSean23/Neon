@@ -68,7 +68,6 @@ public class FreeFlowCombatScript : MonoBehaviour
         {
             Debug.Log("Ending attack4");
             anim.SetBool("attack4", false);
-            //realComboCount = 0;
 
         }
 
@@ -161,11 +160,10 @@ public class FreeFlowCombatScript : MonoBehaviour
                     soundManager.playSfx(soundManager.lightPunch);
                     Debug.Log("ENEMY HIT!");
                     enemyHitCoroutine = StartCoroutine(EnemyGotHit(enemyGameobject));
-                    //enemyGameobject.GetComponent<Animator>().SetBool("EnemyHit", true);
+
                     enemyGameobject.GetComponent<EnemyScript>().health -= dmg;
                     enemyGameobject.GetComponent<Animator>().SetFloat("Health", enemyGameobject.GetComponent<EnemyScript>().health);
-                    //StopCoroutine(enemyHitCoroutine);
-                    //enemyGameobject.GetComponent<Animator>().SetBool("EnemyHit", false);
+
                 }
             }
         }

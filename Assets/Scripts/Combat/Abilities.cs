@@ -21,12 +21,16 @@ public class Abilities : MonoBehaviour
     public SoundScript soundManager;
 
     bool canFinisher;
+
+    bool canFlurry;
     Coroutine finisherCoroutine;
+    Coroutine flurryCoroutine;
 
     // Start is called before the first frame update
     void Start()
     {
         canFinisher = true;
+        canFlurry = true;
         soundManager = GameObject.FindGameObjectWithTag("Sound").GetComponent<SoundScript>();
         anim = GetComponent<Animator>();
         originalFOV = cam.orthographicSize;
@@ -43,49 +47,23 @@ public class Abilities : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.V) && PlayerPrefs.GetString("nano1") == "true")
-        {
-            Debug.Log("NANO 1 ACTIVATED!");
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha2) && PlayerPrefs.GetString("damageboost") == "false")
-        {
-            Debug.Log("YOU HAVEN'T UNLOCKED damage boost YET!");
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha2) && PlayerPrefs.GetString("damageboost") == "true")
-        {
-            Debug.Log("damage boost activated!");
-        }
-
-        if (Input.GetKeyDown(KeyCode.V) && PlayerPrefs.GetString("nano1") == "false")
-        {
-            Debug.Log("NANO 1 ACTIVATED!");
-        }
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             Debug.Log("Ability 1 Activated!");
             StartFinisher();
-            //anim.SetBool("attack5", false);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha2) && PlayerPrefs.GetString("flurryofpunches") == "true")
+        {
+            if (canFlurry)
+            {
+                canFlurry = false;
+                anim.SetBool("flurry", true);
+                flurryCoroutine = StartCoroutine(FlurryCoroutine());
+            }
         }
     }
-
-
-    // public void Human1()
-    // {
-    //     isZooming = true;
-
-    //     if (isZooming)
-    //     {
-    //         StartFinisher();
-    //     }
-
-    //     else
-    //     {
-    //         EndFinisher();
-    //     }
-    // }
 
     // HUMAN Abilities
 
@@ -133,6 +111,19 @@ public class Abilities : MonoBehaviour
     {
         yield return new WaitForSeconds(10f);
         canFinisher = true;
+    }
+
+
+    // Flurry
+    IEnumerator FlurryCoroutine()
+    {
+        yield return new WaitForSeconds(10f);
+        canFlurry = true;
+    }
+
+    public void EndFlurry()
+    {
+        anim.SetBool("flurry", false);
     }
 
 

@@ -25,7 +25,7 @@ public class Blackout : MonoBehaviour
     void Update()
     {
         // Make sure to ADD COOLDOWN later on
-        if (Input.GetKeyDown(KeyCode.B))
+        if (Input.GetKeyDown(KeyCode.Alpha2) && PlayerPrefs.GetString("blackout") == "true")
         {
             TurnOffLights();
             StartCoroutine(LightsCoroutine());

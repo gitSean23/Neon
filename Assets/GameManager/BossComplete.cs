@@ -16,7 +16,6 @@ public class BossComplete : MonoBehaviour
         {
             if (AreAllEnemiesDefeated())
             {
-                //cards = GameObject.FindGameObjectWithTag("CardSelection");
                 if (cards == null)
                 {
                     SceneManager.LoadScene(overworldSceneName); // Load the overworld scene
